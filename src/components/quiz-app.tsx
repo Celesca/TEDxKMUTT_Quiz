@@ -1,7 +1,7 @@
 "use client"; // Enables client-side rendering for this component
 import { useState, useEffect } from "react"; // Import useState and useEffect hooks from React
 import { personalityQuestions } from "@/content/en_questions";
-import Layout from "./Background";
+import Background from "./Background";
 import LanguagePicker from "./LanguagePicker";
 
 type Answer = {
@@ -100,8 +100,11 @@ export default function PersonalityQuizApp() {
   if (state.showResults) {
     return (
       <div>
-        <h2>Your Personality Type: {topPersonality}</h2>
-        <button onClick={resetQuiz}>Try Again</button>
+        <LanguagePicker />
+        <Background>
+            <h2>Your Personality Type: {topPersonality}</h2>
+            <button onClick={resetQuiz}>Try Again</button>
+        </Background>
       </div>
     );
   }
@@ -109,8 +112,7 @@ export default function PersonalityQuizApp() {
   return (
     <div>
         <LanguagePicker />
-        
-        <Layout>
+        <Background>
         
             {/* Quiz content */}
 
@@ -154,7 +156,7 @@ export default function PersonalityQuizApp() {
                 </div>
                 </div>
             )}
-        </Layout>
+        </Background>
     </div>
   );
 }
