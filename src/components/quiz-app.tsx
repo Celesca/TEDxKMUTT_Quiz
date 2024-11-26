@@ -1,9 +1,7 @@
 "use client"; // Enables client-side rendering for this component
 import { useState, useEffect } from "react"; // Import useState and useEffect hooks from React
 import { personalityQuestions } from "@/content/en_questions";
-import Image from "next/image";
-import BackgroundImage from "@/assets/wave-line-1.webp";
-import Logo from "./logo";
+import Layout from "./Layout";
 import LanguagePicker from "./LanguagePicker";
 
 type Answer = {
@@ -111,62 +109,52 @@ export default function PersonalityQuizApp() {
   return (
     <div>
         <LanguagePicker />
-        <main className="relative min-h-screen overflow-hidden flex flex-col items-center pt-8 space-y-2">
-        <Logo />
-        <Image
-            src={BackgroundImage}
-            alt="Background Decoration"
-            className="absolute bottom-40 md:bottom-0 md:w-full -z-30 
-                                left-1/2 md:left-0 -translate-x-1/2 max-w-screen-2xl md:max-w-full 
-                                md:translate-x-0"
-            priority
-        />
-        <div className="fixed bottom-0 right-0 translate-x-1/3 translate-y-1/3 -z-20 bg-primary-500 blur-[120px] w-[32rem] h-[32rem] opacity-30 rounded-full"></div>
-        <div className="fixed top-0 left-0 -translate-x-1/3 -translate-y-1/2 -z-20 bg-primary-500 blur-[120px] w-[32rem] h-[32rem] opacity-30 rounded-full"></div>
+        
+        <Layout>
+        
+            {/* Quiz content */}
 
-        {/* Quiz content */}
-
-        {state.currentQuestion === state.questions.length ? (
-            // Results section
-            <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                Your Personality Type:{" "}
-                <span className="text-red-600">{topPersonality}</span>
-            </h2>
-            <button
-                onClick={resetQuiz}
-                className="w-full bg-red-600 text-white py-3 px-6 rounded-lg
-                            hover:bg-red-700 transition duration-300 ease-in-out
-                            text-lg font-semibold"
-            >
-                Try Again
-            </button>
-            </div>
-        ) : (
-            // Questions section
-            <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
-                Question {state.currentQuestion + 1}/{state.questions.length}
-            </h2>
-            <p className="text-gray-300 text-lg mb-6">
-                {currentQuestion.question}
-            </p>
-            <div className="space-y-3">
-                {currentQuestion.answers.map((answer, index) => (
+            {state.currentQuestion === state.questions.length ? (
+                // Results section
+                <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
+                    Your Personality Type:{" "}
+                    <span className="text-red-600">{topPersonality}</span>
+                </h2>
                 <button
-                    key={index}
-                    onClick={() => handleAnswerClick(answer.personalityType)}
-                    className="w-full bg-gray-700 text-white py-3 px-6 rounded-lg
-                                hover:bg-red-600 transition duration-300 ease-in-out
-                                text-left text-lg"
+                    onClick={resetQuiz}
+                    className="w-full bg-red-600 text-white py-3 px-6 rounded-lg
+                                hover:bg-red-700 transition duration-300 ease-in-out
+                                text-lg font-semibold"
                 >
-                    {answer.text}
+                    Try Again
                 </button>
-                ))}
-            </div>
-            </div>
-        )}
-        </main>
+                </div>
+            ) : (
+                // Questions section
+                <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+                    Question {state.currentQuestion + 1}/{state.questions.length}
+                </h2>
+                <p className="text-gray-300 text-lg mb-6">
+                    {currentQuestion.question}
+                </p>
+                <div className="space-y-3">
+                    {currentQuestion.answers.map((answer, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handleAnswerClick(answer.personalityType)}
+                        className="w-full bg-gray-700 text-white py-3 px-6 rounded-lg
+                                    hover:bg-red-600 transition duration-300 ease-in-out
+                                    text-left text-lg"
+                    >
+                        {answer.text}
+                    </button>
+                    ))}
+                </div>
+                </div>
+            )}
+        </Layout>
     </div>
   );
 }
