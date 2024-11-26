@@ -1,7 +1,9 @@
+import QuizApp from "@/components/quiz-app";
+
 export default function Home() {
   return (
       <div>
-        Hello World
+        <QuizApp />
       </div>
   );
 }
