@@ -38,10 +38,10 @@ export default function PersonalityQuizApp() {
     isLoading: true,
   });
 
-  // Fetch questions or import them locally
+  // Fetch questions
   useEffect(() => {
     const loadQuestions = async () => {
-      const questions = personalityQuestions; // Import locally stored questions
+      const questions = personalityQuestions;
       setState((prevState) => ({
         ...prevState,
         questions,
