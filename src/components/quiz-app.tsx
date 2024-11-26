@@ -2,162 +2,119 @@
 import { useState, useEffect } from "react"; // Import useState and useEffect hooks from React
 
 
-// Define the Answer type
 type Answer = {
-  text: string;
-  isCorrect: boolean;
-};
-
-// Define the Question type
-type Question = {
-  question: string;
-  answers: Answer[];
-};
-
-// Define the QuizState type
-type QuizState = {
-  currentQuestion: number;
-  score: number;
-  showResults: boolean;
-  questions: Question[];
-  isLoading: boolean;
-};
-
-export default function QuizApp() {
-  // State to manage the quiz
-  const [state, setState] = useState<QuizState>({
-    currentQuestion: 0,
-    score: 0,
-    showResults: false,
-    questions: [],
-    isLoading: true,
-  });
-
-  // useEffect to fetch quiz questions from API when the component mounts
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch(
-          "https://opentdb.com/api.php?amount=10&type=multiple"
-        );
-        const data = await response.json();
-        const questions = data.results.map((item: { question: string; correct_answer: string; incorrect_answers: string[] }) => {
-          const incorrectAnswers = item.incorrect_answers.map(
-            (answer: string) => ({
-              text: answer,
-              isCorrect: false,
-            })
-          );
-          const correctAnswer = {
-            text: item.correct_answer,
-            isCorrect: true,
-          };
-          return {
-            question: item.question,
-            answers: [...incorrectAnswers, correctAnswer].sort(
-              () => Math.random() - 0.5
-            ),
-          };
-        });
+    text: string;
+    personalityType: string; // Associates answer with a personality type
+  };
+  
+  type Question = {
+    question: string;
+    answers: Answer[];
+  };
+  
+  type QuizState = {
+    currentQuestion: number;
+    personalityScores: Record<string, number>; // Tracks scores for each personality type
+    showResults: boolean;
+    questions: Question[];
+    isLoading: boolean;
+  };
+  
+  export default function PersonalityQuizApp() {
+    const [state, setState] = useState<QuizState>({
+      currentQuestion: 0,
+      personalityScores: {
+        Thinker: 0,
+        Socializer: 0,
+        Adventurer: 0,
+        Leader: 0,
+      },
+      showResults: false,
+      questions: [],
+      isLoading: true,
+    });
+  
+    // Fetch questions or import them locally
+    useEffect(() => {
+      const loadQuestions = async () => {
+        const questions = personalityQuestions; // Import locally stored questions
         setState((prevState) => ({
           ...prevState,
           questions,
           isLoading: false,
         }));
-      } catch (error) {
-        console.error("Failed to fetch questions:", error);
-      }
-    };
-
-    fetchQuestions();
-  }, []);
-
-  // Function to handle answer click
-  const handleAnswerClick = (isCorrect: boolean): void => {
-    if (isCorrect) {
-      setState((prevState) => ({ ...prevState, score: prevState.score + 1 }));
-    }
-
-    const nextQuestion = state.currentQuestion + 1;
-    if (nextQuestion < state.questions.length) {
+      };
+      loadQuestions();
+    }, []);
+  
+    const handleAnswerClick = (personalityType: string): void => {
       setState((prevState) => ({
         ...prevState,
-        currentQuestion: nextQuestion,
+        personalityScores: {
+          ...prevState.personalityScores,
+          [personalityType]: prevState.personalityScores[personalityType] + 1,
+        },
       }));
-    } else {
-      setState((prevState) => ({ ...prevState, showResults: true }));
+  
+      const nextQuestion = state.currentQuestion + 1;
+      if (nextQuestion < state.questions.length) {
+        setState((prevState) => ({
+          ...prevState,
+          currentQuestion: nextQuestion,
+        }));
+      } else {
+        setState((prevState) => ({ ...prevState, showResults: true }));
+      }
+    };
+  
+    const resetQuiz = (): void => {
+      setState({
+        currentQuestion: 0,
+        personalityScores: {
+          Thinker: 0,
+          Socializer: 0,
+          Adventurer: 0,
+          Leader: 0,
+        },
+        showResults: false,
+        questions: state.questions,
+        isLoading: false,
+      });
+    };
+  
+    if (state.isLoading) {
+      return <div>Loading...</div>;
     }
-  };
-
-  // Function to reset the quiz
-  const resetQuiz = (): void => {
-    setState({
-      currentQuestion: 0,
-      score: 0,
-      showResults: false,
-      questions: state.questions,
-      isLoading: false,
-    });
-  };
-
-  // Show loading spinner if the questions are still loading
-  if (state.isLoading) {
-    return (
-        <div className="flex flex-col items-center justify-center h-screen bg-background text-foreground">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-blue-500"></div>
-        <p>Loading quiz questions, please wait...</p>
+  
+    if (state.showResults) {
+      const topPersonality = Object.keys(state.personalityScores).reduce((a, b) =>
+        state.personalityScores[a] > state.personalityScores[b] ? a : b
+      );
+  
+      return (
+        <div>
+          <h2>Your Personality Type: {topPersonality}</h2>
+          <button onClick={resetQuiz}>Try Again</button>
         </div>
+      );
+    }
+  
+    const currentQuestion = state.questions[state.currentQuestion];
+  
+    return (
+      <div>
+        <h2>
+          Question {state.currentQuestion + 1}/{state.questions.length}
+        </h2>
+        <p>{currentQuestion.question}</p>
+        {currentQuestion.answers.map((answer, index) => (
+          <button
+            key={index}
+            onClick={() => handleAnswerClick(answer.personalityType)}
+          >
+            {answer.text}
+          </button>
+        ))}
+      </div>
     );
   }
-
-  // Show message if no questions are available
-  if (state.questions.length === 0) {
-    return <div>No questions available.</div>;
-  }
-
-  // Get the current question
-  const currentQuestion = state.questions[state.currentQuestion];
-
-  // JSX return statement rendering the Quiz UI
-  return (
-    <div className="flex flex-col items-center justify-center h-screen bg-background text-foreground">
-      {state.showResults ? (
-        // Show results if the quiz is finished
-        <div className="bg-card p-8 rounded-lg shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Results</h2>
-          <p className="text-lg mb-4">
-            You scored {state.score} out of {state.questions.length}
-          </p>
-          <button onClick={resetQuiz} className="w-full">
-            Try Again
-          </button>
-        </div>
-      ) : (
-        // Show current question and answers if the quiz is in progress
-        <div className="bg-card p-8 rounded-lg shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">
-            Question {state.currentQuestion + 1}/{state.questions.length}
-          </h2>
-          <p
-            className="text-lg mb-4"
-            dangerouslySetInnerHTML={{ __html: currentQuestion.question }}
-          />
-          <div className="grid gap-4">
-            {currentQuestion.answers.map((answer, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerClick(answer.isCorrect)}
-                className="w-full"
-              >
-                {answer.text}
-              </button>
-            ))}
-          </div>
-          <div className="mt-4 text-right">
-            <span className="text-muted-foreground">Score: {state.score}</span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
