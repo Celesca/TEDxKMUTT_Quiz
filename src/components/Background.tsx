@@ -2,9 +2,11 @@ import React from 'react'
 import BackgroundImage from '@/assets/wave-line-1.webp'
 import Logo from './logo'
 import Image from 'next/image'
+import LanguagePicker from './LanguagePicker'
 const Background = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
+        <LanguagePicker />
         <main className="relative min-h-screen overflow-hidden flex flex-col items-center pt-8 space-y-2">
                 <Logo />
                 <Image

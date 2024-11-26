@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react"; // Import useState and useEffect hooks from React
 import { personalityQuestions } from "@/content/en_questions";
 import Background from "./Background";
-import LanguagePicker from "./LanguagePicker";
 
 type Answer = {
   text: string;
@@ -86,9 +85,9 @@ export default function PersonalityQuizApp() {
 
   if (state.isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
-      </div>
+      <Background>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-600"></div>
+      </Background>
     );
   }
 
@@ -100,7 +99,7 @@ export default function PersonalityQuizApp() {
   if (state.showResults) {
     return (
       <div>
-        <LanguagePicker />
+
         <Background>
             <h2>Your Personality Type: {topPersonality}</h2>
             <button onClick={resetQuiz}>Try Again</button>
@@ -111,7 +110,6 @@ export default function PersonalityQuizApp() {
 
   return (
     <div>
-        <LanguagePicker />
         <Background>
         
             {/* Quiz content */}
