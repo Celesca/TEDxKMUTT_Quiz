@@ -87,11 +87,12 @@ type Answer = {
       return <div>Loading...</div>;
     }
   
+    const currentQuestion = state.questions[state.currentQuestion];
+    const topPersonality = Object.keys(state.personalityScores).reduce((a, b) =>
+      state.personalityScores[a] > state.personalityScores[b] ? a : b
+    );
+
     if (state.showResults) {
-      const topPersonality = Object.keys(state.personalityScores).reduce((a, b) =>
-        state.personalityScores[a] > state.personalityScores[b] ? a : b
-      );
-  
       return (
         <div>
           <h2>Your Personality Type: {topPersonality}</h2>
@@ -100,22 +101,47 @@ type Answer = {
       );
     }
   
-    const currentQuestion = state.questions[state.currentQuestion];
-  
     return (
-      <div>
-        <h2>
-          Question {state.currentQuestion + 1}/{state.questions.length}
-        </h2>
-        <p>{currentQuestion.question}</p>
-        {currentQuestion.answers.map((answer, index) => (
-          <button
-            key={index}
-            onClick={() => handleAnswerClick(answer.personalityType)}
-          >
-            {answer.text}
-          </button>
-        ))}
-      </div>
-    );
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+          {state.currentQuestion === state.questions.length ? (
+            // Results section
+            <div className="bg-gray-800 rounded-lg p-8 max-w-md w-full shadow-2xl">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
+                Your Personality Type: <span className="text-red-600">{topPersonality}</span>
+              </h2>
+              <button 
+                onClick={resetQuiz}
+                className="w-full bg-red-600 text-white py-3 px-6 rounded-lg
+                         hover:bg-red-700 transition duration-300 ease-in-out
+                         text-lg font-semibold"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : (
+            // Questions section
+            <div className="bg-gray-800 rounded-lg p-8 max-w-md w-full shadow-2xl">
+              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+                Question {state.currentQuestion + 1}/{state.questions.length}
+              </h2>
+              <p className="text-gray-300 text-lg mb-6">
+                {currentQuestion.question}
+              </p>
+              <div className="space-y-3">
+                {currentQuestion.answers.map((answer, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswerClick(answer.personalityType)}
+                    className="w-full bg-gray-700 text-white py-3 px-6 rounded-lg
+                             hover:bg-red-600 transition duration-300 ease-in-out
+                             text-left text-lg"
+                  >
+                    {answer.text}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      );
   }
