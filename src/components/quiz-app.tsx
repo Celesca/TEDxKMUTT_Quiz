@@ -1,6 +1,8 @@
 "use client"; // Enables client-side rendering for this component
 import { useState, useEffect } from "react"; // Import useState and useEffect hooks from React
 import { personalityQuestions } from "@/content/en_questions";
+import Image from "next/image";
+import BackgroundImage from '@/assets/wave-line-1.webp';
 
 
 type Answer = {
@@ -102,10 +104,29 @@ type Answer = {
     }
   
     return (
-        <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+        <div className="relative min-h-screen overflow-hidden flex items-center justify-center p-4">
+                <Image
+                src={BackgroundImage}
+                alt="Background Decoration"
+                className="absolute bottom-40 md:bottom-0 md:w-full -z-30 
+                            left-1/2 md:left-0 -translate-x-1/2 max-w-screen-2xl md:max-w-full 
+                            md:translate-x-0"
+                priority
+                />
+            <div
+                className="fixed bottom-0 right-0 translate-x-1/3 translate-y-1/3 -z-20 bg-primary-500 blur-[120px] w-[32rem] h-[32rem] opacity-30 rounded-full"
+            >
+            </div>
+            <div
+                className="fixed top-0 left-0 -translate-x-1/3 -translate-y-1/2 -z-20 bg-primary-500 blur-[120px] w-[32rem] h-[32rem] opacity-30 rounded-full"
+            >
+            </div>
+
+            {/* Quiz content */}
+
           {state.currentQuestion === state.questions.length ? (
             // Results section
-            <div className="bg-gray-800 rounded-lg p-8 max-w-md w-full shadow-2xl">
+            <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
                 Your Personality Type: <span className="text-red-600">{topPersonality}</span>
               </h2>
@@ -120,7 +141,7 @@ type Answer = {
             </div>
           ) : (
             // Questions section
-            <div className="bg-gray-800 rounded-lg p-8 max-w-md w-full shadow-2xl">
+            <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
               <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
                 Question {state.currentQuestion + 1}/{state.questions.length}
               </h2>
@@ -142,6 +163,7 @@ type Answer = {
               </div>
             </div>
           )}
+
         </div>
       );
   }
