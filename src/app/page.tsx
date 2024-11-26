@@ -1,9 +1,10 @@
-import QuizApp from "@/components/quiz-app";
+import QuizApp from "@/components/QuizApp";
 
 export default function Home() {
   return (
       <div>
         <QuizApp />
+        
       </div>
   );
 }
