@@ -3,7 +3,8 @@ import { useState, useEffect } from "react"; // Import useState and useEffect ho
 import { personalityQuestions } from "@/content/en_questions";
 import Image from "next/image";
 import BackgroundImage from '@/assets/wave-line-1.webp';
-
+import Logo from "./logo";
+import LanguagePicker from "./LanguagePicker";
 
 type Answer = {
     text: string;
@@ -24,6 +25,7 @@ type Answer = {
   };
   
   export default function PersonalityQuizApp() {
+    const [language, setLanguage] = useState("en");
     const [state, setState] = useState<QuizState>({
       currentQuestion: 0,
       personalityScores: {
@@ -104,7 +106,10 @@ type Answer = {
     }
   
     return (
-        <div className="relative min-h-screen overflow-hidden flex items-center justify-center p-4">
+        <div className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center p-4">
+            <LanguagePicker />
+            
+            <Logo />
                 <Image
                 src={BackgroundImage}
                 alt="Background Decoration"
