@@ -1,5 +1,6 @@
 "use client"; // Enables client-side rendering for this component
 import { useState, useEffect } from "react"; // Import useState and useEffect hooks from React
+import { personalityQuestions } from "@/content/questions";
 
 
 type Answer = {
