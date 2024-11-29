@@ -31,7 +31,7 @@ type QuizState = {
 };
 
 export default function PersonalityQuizApp() {
-  const [state, setState] = useState<QuizState>({
+  const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
     personalityScores: {
       thinker: INITIAL_POINTS,
@@ -46,8 +46,8 @@ export default function PersonalityQuizApp() {
 
   useEffect(() => {
     const loadQuestions = async () => {
-      setState((prevState) => ({
-        ...prevState,
+      setQuizState((prev) => ({
+        ...prev,
         questions: personalityQuestions,
         isLoading: false,
       }));
@@ -56,25 +56,25 @@ export default function PersonalityQuizApp() {
   }, []);
 
   const handleAnswerClick = (points: Partial<Points>): void => {
-    setState((prevState) => ({
-      ...prevState,
+    setQuizState((prev) => ({
+      ...prev,
       personalityScores: {
-        ...prevState.personalityScores,
+        ...prev.personalityScores,
         ...Object.entries(points).reduce(
           (scores, [type, value]) => ({
             ...scores,
-            [type as keyof Points]: prevState.personalityScores[type as keyof Points] + value,
+            [type as keyof Points]: prev.personalityScores[type as keyof Points] + value,
           }),
           {} as Points
         ),
       },
-      currentQuestion: prevState.currentQuestion + 1,
-      showResults: prevState.currentQuestion + 1 >= prevState.questions.length,
+      currentQuestion: prev.currentQuestion + 1,
+      showResults: prev.currentQuestion + 1 >= prev.questions.length,
     }));
   };
 
   const resetQuiz = (): void => {
-    setState({
+    setQuizState({
       currentQuestion: 0,
       personalityScores: {
         thinker: INITIAL_POINTS,
@@ -83,12 +83,12 @@ export default function PersonalityQuizApp() {
         leader: INITIAL_POINTS,
       },
       showResults: false,
-      questions: state.questions,
+      questions: quizState.questions,
       isLoading: false,
     });
   };
 
-  if (state.isLoading) {
+  if (quizState.isLoading) {
     return (
       <Background>
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-600"></div>
@@ -96,8 +96,8 @@ export default function PersonalityQuizApp() {
     );
   }
 
-  if (state.showResults) {
-    const winningType = Object.entries(state.personalityScores).reduce((a, b) =>
+  if (quizState.showResults) {
+    const winningType = Object.entries(quizState.personalityScores).reduce((a, b) =>
       a[1] > b[1] ? a : b
     )[0];
 
@@ -106,7 +106,7 @@ export default function PersonalityQuizApp() {
         <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl text-white">
           <h2 className="text-2xl font-bold mb-4">Your Results</h2>
           <div className="space-y-2 mb-6">
-            {Object.entries(state.personalityScores).map(([type, score]) => (
+            {Object.entries(quizState.personalityScores).map(([type, score]) => (
               <div key={type} className="flex justify-between">
                 <span className="capitalize">{type}:</span>
                 <span>{score} points</span>
@@ -131,13 +131,13 @@ export default function PersonalityQuizApp() {
     <Background>
       <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
         <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
-          Question {state.currentQuestion + 1}/{state.questions.length}
+          Question {quizState.currentQuestion + 1}/{quizState.questions.length}
         </h2>
         <p className="text-gray-300 text-lg mb-6">
-          {state.questions[state.currentQuestion].question}
+          {quizState.questions[quizState.currentQuestion].question}
         </p>
         <div className="space-y-3">
-          {state.questions[state.currentQuestion].answers.map((answer, index) => (
+          {quizState.questions[quizState.currentQuestion].answers.map((answer, index) => (
             <button
               key={index}
               onClick={() => handleAnswerClick(answer.points)}
