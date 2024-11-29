@@ -2,31 +2,7 @@
 import { useState, useEffect } from "react";
 import { personalityQuestions } from "@/content/en_questions";
 import Background from "./Background";
-
-type Points = {
-  thinker: number;
-  socializer: number;
-  adventurer: number;
-  leader: number;
-};
-
-type Answer = {
-  text: string;
-  points: Partial<Points>;
-};
-
-type Question = {
-  question: string;
-  answers: Answer[];
-};
-
-type QuizState = {
-  currentQuestion: number;
-  personalityScores: Points;
-  showResults: boolean;
-  questions: Question[];
-  isLoading: boolean;
-};
+import { QuizState, Points } from "@/types/QuizType";
 
 const INITIAL_POINTS = 0;
 const INITIAL_QUIZ_STATE: QuizState = {
