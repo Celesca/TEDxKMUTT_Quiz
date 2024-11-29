@@ -101,16 +101,8 @@ export default function PersonalityQuizApp() {
       <Background>
         <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl text-white">
           <h2 className="text-2xl font-bold mb-4">Your Results</h2>
-          <div className="space-y-2 mb-6">
-            {Object.entries(quizState.personalityScores).map(([type, score]) => (
-              <div key={type} className="flex justify-between">
-                <span className="capitalize">{type}:</span>
-                <span>{score} points</span>
-              </div>
-            ))}
-          </div>
-          <h3 className="text-xl font-bold mb-4">
-            Your Dominant Type: <span className="capitalize text-red-500">{winningType}</span>
+          <h3 className="text-xl font-bold capitalize text-red-500 mb-4">
+            {winningType}
           </h3>
           <button
             onClick={resetQuiz}
