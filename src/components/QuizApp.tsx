@@ -18,7 +18,6 @@ const INITIAL_QUIZ_STATE: QuizState = {
   isLoading: true,
 };
 
-
 export default function PersonalityQuizApp() {
   const [quizState, setQuizState] = useState<QuizState>(INITIAL_QUIZ_STATE);
 
