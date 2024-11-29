@@ -66,5 +66,4 @@ export const personalityQuestions = [
       },
     ],
   },
-  // Add more questions
 ];
