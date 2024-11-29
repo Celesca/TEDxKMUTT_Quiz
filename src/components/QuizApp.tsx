@@ -45,7 +45,7 @@ const INITIAL_QUIZ_STATE: QuizState = {
 
 export default function PersonalityQuizApp() {
   const [quizState, setQuizState] = useState<QuizState>(INITIAL_QUIZ_STATE);
-  
+
   const loadQuestions = async () => {
     setQuizState((prev) => ({
       ...prev,
@@ -58,36 +58,36 @@ export default function PersonalityQuizApp() {
     loadQuestions();
   }, []);
 
-const calculateUpdatedScores = (
-  currentScores: Points, 
-  newPoints: Partial<Points>
-): Points => {
-  return Object.entries(newPoints).reduce(
-    (scores, [type, value]) => ({
-      ...scores,
-      [type as keyof Points]: currentScores[type as keyof Points] + (value ?? 0),
-    }),
-    { ...currentScores }
-  );
-};
+  const calculateUpdatedScores = (
+    currentScores: Points,
+    newPoints: Partial<Points>
+  ): Points => {
+    return Object.entries(newPoints).reduce(
+      (scores, [type, value]) => ({
+        ...scores,
+        [type as keyof Points]: currentScores[type as keyof Points] + (value ?? 0),
+      }),
+      { ...currentScores }
+    );
+  };
 
-const isQuizComplete = (currentQuestion: number, totalQuestions: number): boolean => {
-  return currentQuestion + 1 >= totalQuestions;
-};
+  const isQuizComplete = (currentQuestion: number, totalQuestions: number): boolean => {
+    return currentQuestion + 1 >= totalQuestions;
+  };
 
-const handleAnswerClick = (points: Partial<Points>): void => {
-  setQuizState((prev) => {
-    const nextQuestion = prev.currentQuestion + 1;
-    const updatedScores = calculateUpdatedScores(prev.personalityScores, points);
-    
-    return {
-      ...prev,
-      personalityScores: updatedScores,
-      currentQuestion: nextQuestion,
-      showResults: isQuizComplete(prev.currentQuestion, prev.questions.length)
-    };
-  });
-};
+  const handleAnswerClick = (points: Partial<Points>): void => {
+    setQuizState((prev) => {
+      const nextQuestion = prev.currentQuestion + 1;
+      const updatedScores = calculateUpdatedScores(prev.personalityScores, points);
+
+      return {
+        ...prev,
+        personalityScores: updatedScores,
+        currentQuestion: nextQuestion,
+        showResults: isQuizComplete(prev.currentQuestion, prev.questions.length)
+      };
+    });
+  };
 
   const resetQuiz = (): void => {
     setQuizState({
