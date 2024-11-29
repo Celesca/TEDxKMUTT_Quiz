@@ -30,19 +30,22 @@ type QuizState = {
   isLoading: boolean;
 };
 
+const INITIAL_QUIZ_STATE: QuizState = {
+  currentQuestion: 0,
+  personalityScores: {
+    thinker: INITIAL_POINTS,
+    socializer: INITIAL_POINTS,
+    adventurer: INITIAL_POINTS,
+    leader: INITIAL_POINTS,
+  },
+  showResults: false,
+  questions: [],
+  isLoading: true,
+};
+
+
 export default function PersonalityQuizApp() {
-  const [quizState, setQuizState] = useState<QuizState>({
-    currentQuestion: 0,
-    personalityScores: {
-      thinker: INITIAL_POINTS,
-      socializer: INITIAL_POINTS,
-      adventurer: INITIAL_POINTS,
-      leader: INITIAL_POINTS,
-    },
-    showResults: false,
-    questions: [],
-    isLoading: true,
-  });
+  const [quizState, setQuizState] = useState<QuizState>(INITIAL_QUIZ_STATE);
 
   const loadQuestions = async () => {
     setQuizState((prev) => ({
@@ -76,14 +79,7 @@ export default function PersonalityQuizApp() {
 
   const resetQuiz = (): void => {
     setQuizState({
-      currentQuestion: 0,
-      personalityScores: {
-        thinker: INITIAL_POINTS,
-        socializer: INITIAL_POINTS,
-        adventurer: INITIAL_POINTS,
-        leader: INITIAL_POINTS,
-      },
-      showResults: false,
+      ...INITIAL_QUIZ_STATE,
       questions: quizState.questions,
       isLoading: false,
     });
