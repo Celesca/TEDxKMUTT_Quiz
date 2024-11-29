@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { personalityQuestions } from "@/content/en_questions";
 import Background from "./Background";
 
-const INITIAL_POINTS = 10; // Base points for each personality type
-
 type Points = {
   thinker: number;
   socializer: number;
@@ -30,6 +28,7 @@ type QuizState = {
   isLoading: boolean;
 };
 
+const INITIAL_POINTS = 0;
 const INITIAL_QUIZ_STATE: QuizState = {
   currentQuestion: 0,
   personalityScores: {
@@ -46,7 +45,7 @@ const INITIAL_QUIZ_STATE: QuizState = {
 
 export default function PersonalityQuizApp() {
   const [quizState, setQuizState] = useState<QuizState>(INITIAL_QUIZ_STATE);
-
+  
   const loadQuestions = async () => {
     setQuizState((prev) => ({
       ...prev,
