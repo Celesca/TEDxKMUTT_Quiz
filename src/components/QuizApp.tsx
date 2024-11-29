@@ -44,14 +44,15 @@ export default function PersonalityQuizApp() {
     isLoading: true,
   });
 
+  const loadQuestions = async () => {
+    setQuizState((prev) => ({
+      ...prev,
+      questions: personalityQuestions,
+      isLoading: false,
+    }));
+  };
+
   useEffect(() => {
-    const loadQuestions = async () => {
-      setQuizState((prev) => ({
-        ...prev,
-        questions: personalityQuestions,
-        isLoading: false,
-      }));
-    };
     loadQuestions();
   }, []);
 
