@@ -17,18 +17,19 @@ export const personalityQuestions = [
         }
       },
       {
-        text: "Exploring nature", points: {
+        text: "Exploring nature", 
+        points: {
           adventurer: 1,
         }
       },
       {
-        text: "Organizing a project", points: {
+        text: "Organizing a project", 
+        points: {
           leader: 1,
         }
       },
       {
         text: "Planning future goals",
-
         points: {
           thinker: 1,
           leader: 1,
@@ -39,11 +40,31 @@ export const personalityQuestions = [
   {
     question: "Which activity sounds most appealing?",
     answers: [
-      { text: "Solving puzzles", personalityType: "Thinker" },
-      { text: "Hosting a gathering", personalityType: "Socializer" },
-      { text: "Going on a hike", personalityType: "Adventurer" },
-      { text: "Organizing a project", personalityType: "Leader" },
+      { 
+        text: "Solving puzzles", 
+        points: {
+          thinker: 1,
+        }
+      },
+      { 
+        text: "Hosting a gathering", 
+        points: {
+          socializer: 1,
+        }
+      },
+      { 
+        text: "Going on a hike", 
+        points: {
+          adventurer: 1,
+        }
+      },
+      { 
+        text: "Organizing a project", 
+        points: {
+          leader: 1,
+        }
+      },
     ],
   },
-  // Add more questions as needed
+  // Add more questions
 ];
