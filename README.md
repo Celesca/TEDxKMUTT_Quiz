@@ -1,3 +1,13 @@
+Note for add coworker fork repo
+
+git remote add coworker git://path/to/coworkers/repo.git
+git fetch coworker
+git checkout --track coworker/foo
+This will setup a local branch foo, tracking the remote branch coworker/foo. So when your co-worker has made some changes, you can easily pull them:
+
+git checkout foo
+git pull
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
