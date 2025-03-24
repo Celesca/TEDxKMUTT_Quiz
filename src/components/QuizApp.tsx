@@ -30,17 +30,17 @@ export default function PersonalityQuizApp() {
     
     // Replace these with your actual Google Form field IDs
     // You can find these by inspecting the form HTML
-    const formUrl = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdEuU3ug9Tf9OWpM1heoV8rDq06y_q_rRRZM6Jx58XrKRNU6Q/formResponse';
     const formData = new FormData();
     
     // Map your form fields to entry.XXXXXXX IDs from your Google Form
-    formData.append('entry.123456789', userName); // Name field
-    formData.append('entry.234567890', new Date().toISOString()); // Timestamp
-    formData.append('entry.345678901', quizState.personalityScores.thinker.toString());
-    formData.append('entry.456789012', quizState.personalityScores.socializer.toString());
-    formData.append('entry.567890123', quizState.personalityScores.adventurer.toString());
-    formData.append('entry.678901234', quizState.personalityScores.leader.toString());
-    formData.append('entry.789012345', winningType);
+    formData.append('entry.1125391159', userName); // Name field
+    formData.append('entry.1183018060', new Date().toISOString()); // Timestamp
+    // formData.append('entry.345678901', quizState.personalityScores.thinker.toString());
+    // formData.append('entry.456789012', quizState.personalityScores.socializer.toString());
+    // formData.append('entry.567890123', quizState.personalityScores.adventurer.toString());
+    // formData.append('entry.678901234', quizState.personalityScores.leader.toString());
+    formData.append('entry.2109044670', winningType);
     
     try {
       // Using no-cors mode since Google Forms doesn't support CORS
