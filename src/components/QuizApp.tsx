@@ -188,25 +188,37 @@ export default function PersonalityQuizApp() {
   return (
     <Background>
       <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
-        <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
-          Question {quizState.currentQuestion + 1}/{quizState.questions.length}
-        </h2>
-        <p className="text-gray-300 text-lg mb-6">
-          {quizState.questions[quizState.currentQuestion].question}
-        </p>
-        <div className="space-y-3">
-          {quizState.questions[quizState.currentQuestion].answers.map((answer, index) => (
-            <button
-              key={index}
-              onClick={() => handleAnswerClick(answer.points)}
-              className="w-full bg-gray-700 text-white py-3 px-6 rounded-lg
-                        hover:bg-red-600 transition duration-300 ease-in-out
-                        text-left text-lg"
-            >
-              {answer.text}
-            </button>
-          ))}
-        </div>
+        {quizState.isLoading ? (
+          <div className="text-white text-center">
+            <p>Loading questions...</p>
+          </div>
+        ) : quizState.questions.length === 0 ? (
+          <div className="text-white text-center">
+            <p>No questions available.</p>
+          </div>
+        ) : (
+          <>
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+              Question {quizState.currentQuestion + 1}/{quizState.questions.length}
+            </h2>
+            <p className="text-gray-300 text-lg mb-6">
+              {quizState.questions[quizState.currentQuestion]?.question || "Question not available"}
+            </p>
+            <div className="space-y-3">
+              {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleAnswerClick(answer.points)}
+                  className="w-full bg-gray-700 text-white py-3 px-6 rounded-lg
+                            hover:bg-red-600 transition duration-300 ease-in-out
+                            text-left text-lg"
+                >
+                  {answer.text}
+                </button>
+              )) || <p className="text-white">No answers available</p>}
+            </div>
+          </>
+        )}
       </div>
     </Background>
   );
