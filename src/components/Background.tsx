@@ -2,10 +2,14 @@ import React from 'react'
 import BackgroundImage from '@/assets/wave-line-1.webp'
 import Logo from './logo'
 import Image from 'next/image'
+
 const Background = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
-        <main className="relative min-h-screen overflow-hidden flex flex-col items-center pt-8 space-y-2">
+        <main 
+            className="relative min-h-screen overflow-hidden flex flex-col items-center pt-8 space-y-2"
+            style={{ backgroundColor: "#f5e8da" }} // Added background color
+        >
                 <Logo />
                 <Image
                         src={BackgroundImage}
