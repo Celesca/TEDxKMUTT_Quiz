@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { personalityQuestions } from "@/content/en_questions";
+import { personalityQuestions } from "@/content/th_questions";
 import Background from "./Background";
 import { QuizState, Points } from "@/types/QuizType";
 
@@ -169,11 +169,39 @@ export default function PersonalityQuizApp() {
 
     return (
       <Background>
-        <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl text-white">
+        <div className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl text-gray-800">
           <h2 className="text-2xl font-bold mb-4">Your Results</h2>
           <h3 className="text-xl font-bold capitalize text-red-500 mb-4">
             {winningType}
           </h3>
+          
+          {!submitSuccess ? (
+            <div className="mb-6">
+              <label className="block text-gray-800 mb-2">Your Name:</label>
+              <input 
+                type="text" 
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                className="w-full px-3 py-2 bg-gray-100 text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 mb-4"
+                placeholder="Enter your name"
+              />
+              
+              <button
+                onClick={() => submitToGoogleForm(winningType)}
+                disabled={isSubmitting || !userName.trim()}
+                className={`w-full ${
+                  isSubmitting || !userName.trim() ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'
+                } text-white py-3 px-6 rounded-lg transition duration-300 mb-4`}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Results'}
+              </button>
+            </div>
+          ) : (
+            <div className="mb-6 p-4 bg-green-100 border border-green-500 rounded-lg">
+              <p className="text-green-800">Thank you for submitting your results!</p>
+            </div>
+          )}
+          
           <button
             onClick={resetQuiz}
             className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition duration-300"
@@ -185,23 +213,25 @@ export default function PersonalityQuizApp() {
     );
   }
 
+  // Remove the duplicate if block
+
   return (
     <Background>
-      <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
+      <div className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
         {quizState.isLoading ? (
-          <div className="text-white text-center">
+          <div className="text-gray-800 text-center">
             <p>Loading questions...</p>
           </div>
         ) : quizState.questions.length === 0 ? (
-          <div className="text-white text-center">
+          <div className="text-gray-800 text-center">
             <p>No questions available.</p>
           </div>
         ) : (
           <>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
               Question {quizState.currentQuestion + 1}/{quizState.questions.length}
             </h2>
-            <p className="text-gray-300 text-lg mb-6">
+            <p className="text-gray-600 text-lg mb-6">
               {quizState.questions[quizState.currentQuestion]?.question || "Question not available"}
             </p>
             <div className="space-y-3">
@@ -209,13 +239,13 @@ export default function PersonalityQuizApp() {
                 <button
                   key={index}
                   onClick={() => handleAnswerClick(answer.points)}
-                  className="w-full bg-gray-700 text-white py-3 px-6 rounded-lg
-                            hover:bg-red-600 transition duration-300 ease-in-out
-                            text-left text-lg"
+                  className="w-full bg-gray-100 text-gray-800 py-3 px-6 rounded-lg
+                            hover:bg-red-500 hover:text-white transition duration-300 ease-in-out
+                            text-left text-lg border border-gray-200"
                 >
                   {answer.text}
                 </button>
-              )) || <p className="text-white">No answers available</p>}
+              )) || <p className="text-gray-800">No answers available</p>}
             </div>
           </>
         )}
