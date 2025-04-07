@@ -35,8 +35,8 @@ const Background = ({ children }: { children: React.ReactNode }) => {
                 </div>
                 
                 {/* Content area centered both horizontally and vertically */}
-                <div className="relative z-10 flex-grow flex items-center justify-center w-full">
-                    <div className="w-full max-w-xl px-4 py-6 md:py-10">
+                <div className="relative z-10 flex-grow flex items-center justify-center">
+                    <div className="max-w-xl px-4 py-6 md:py-10">
                         {children}
                     </div>
                 </div>
