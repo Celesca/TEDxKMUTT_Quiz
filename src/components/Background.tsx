@@ -1,24 +1,23 @@
 import React from 'react'
 import BackgroundImage from '@/assets/background.svg'
-import Logo from './logo'
 import Image from 'next/image'
 import Navbar from './Navbar'
 
 const Background = ({ children }: { children: React.ReactNode }) => {
     return (
-        <>
-        <main 
-            className="relative min-h-screen overflow-hidden flex flex-col items-center space-y-2"
-            style={{ backgroundColor: "#f5e8da" }} // Background color
-        >
-                <Navbar />
-                <div className="mt-16">
-                    <Logo />
-                </div>
-                {/* Reset the background image styling */}
+        <div className="min-h-screen flex flex-col">
+            {/* Navbar fixed at the top */}
+            <Navbar />
+            
+            {/* Main content area with proper spacing from navbar */}
+            <main 
+                className="flex-grow relative overflow-hidden flex flex-col items-center"
+                style={{ backgroundColor: "#f5e8da" }} // Background color
+            >
+                {/* Background image */}
                 <div 
                     className="absolute inset-0 overflow-hidden pointer-events-none" 
-                    style={{ zIndex: 0 }} // Try a different z-index
+                    style={{ zIndex: 0 }}
                 >
                     <Image
                         src={BackgroundImage}
@@ -34,11 +33,13 @@ const Background = ({ children }: { children: React.ReactNode }) => {
                         }}
                     />
                 </div>
-                <div className="relative z-10"> {/* Wrap children in a higher z-index div */}
+                
+                {/* Content area with proper padding */}
+                <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pt-6 md:pt-10">
                     {children}
                 </div>
-        </main>
-        </>
+            </main>
+        </div>
     )
 }
 

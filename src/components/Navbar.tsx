@@ -8,7 +8,8 @@ import Strip from '@/assets/strip.png';
 const Navbar = () => {
   return (
     <div className="sticky top-0 z-50 w-full">
-      <div className="absolute inset-x-0 -bottom-2 overflow-hidden">
+      {/* The strip decoration - positioned below the navbar */}
+      <div className="absolute inset-x-0 bottom-0 h-2 overflow-hidden">
         <Image
           src={Strip}
           alt=""
@@ -18,8 +19,10 @@ const Navbar = () => {
           priority
         />
       </div>
-      <div className="w-full bg-white shadow-lg">
-        <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 py-2">
+      
+      {/* The actual navbar with white background */}
+      <div className="relative w-full bg-white shadow-lg">
+        <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 py-3">
           <Link href="/#" className="relative z-10">
             <Image
               src={Logo}
