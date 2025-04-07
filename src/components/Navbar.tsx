@@ -1,87 +1,42 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Button from './Button';
 import Logo from '@/assets/logos/TEDxKMUTT_b.png';
 import Strip from '@/assets/strip.png';
 
-// Simple NavLink component
-const NavLink = ({ href, text }: { href: string; text: string }) => (
-  <li className="relative group">
-    <Link href={href} className="py-2 text-gray-800 hover:text-red-500 transition-colors">
-      {text}
-    </Link>
-    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 transition-all group-hover:w-full"></span>
-  </li>
-);
-
-// Button component
-const Button = ({ 
-  variant = "primary", 
-  text, 
-  iconLeft = "",
-  onClick 
-}: { 
-  variant?: "primary" | "secondary"; 
-  text: string;
-  iconLeft?: string;
-  onClick?: () => void;
-}) => {
-  const baseClasses = "px-4 py-2 rounded-md font-medium transition-colors";
-  const variantClasses = {
-    primary: "bg-red-600 text-white hover:bg-red-700",
-    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300"
-  };
-
-  return (
-    <button 
-      className={`${baseClasses} ${variantClasses[variant]}`}
-      onClick={onClick}
-    >
-      {iconLeft && <span className="mr-2">🌐</span>}
-      {text}
-    </button>
-  );
-};
-
-// CtaButton component
-const CtaButton = () => (
-  <Button variant="primary" text="Register" />
-);
-
 const Navbar = () => {
   return (
-    <div className="sticky top-0 z-50 overflow-x-clip">
-      <div className="relative">
+    <div className="sticky top-0 z-50 w-full">
+      <div className="absolute inset-x-0 -bottom-2 overflow-hidden">
         <Image
           src={Strip}
           alt=""
           width={3000}
-          className="absolute -bottom-2 -right-0 -z-10 w-full scale-125"
+          height={600}
+          className="w-full scale-125"
+          priority
         />
       </div>
-      <div className="top-0 w-full bg-white shadow-lg">
-        <nav className="relative flex justify-between px-4 py-2 items-center">
-          <Link href="/#" passHref>
+      <div className="w-full bg-white shadow-lg">
+        <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 py-2">
+          <Link href="/#" className="relative z-10">
             <Image
-              id="logo"
               src={Logo}
               alt="Logo of TEDxKMUTT"
               priority
-              className="w-40"
+              width={160}
+              height={40}
+              className="w-28 sm:w-40"
             />
           </Link>
-          <ul className="hidden md:flex gap-4 lg:gap-10 text-lg">
-            <NavLink href="#speakers" text="Speakers" />
-            <NavLink href="#agenda" text="Agenda" />
-            <NavLink href="#faqs" text="FAQs" />
-          </ul>
-          <div className="flex gap-2">
-            <div className="hidden md:block">
-              <CtaButton />
-            </div>
-            <Link href="/th" passHref>
-              <Button variant="secondary" text="EN" iconLeft="mdi:globe" />
-            </Link>
+          
+          <div className="relative z-10">
+            <Button 
+              variant="primary" 
+              text="Get My Ticket" 
+              className="transform scale-75 sm:scale-100 origin-right"
+            />
           </div>
         </nav>
       </div>
