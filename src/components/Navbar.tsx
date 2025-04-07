@@ -22,7 +22,7 @@ const Navbar = () => {
       
       {/* The actual navbar with white background */}
       <div className="relative w-full bg-white shadow-lg">
-        <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 py-3">
+        <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 py-2">
           <Link href="/#" className="relative z-10">
             <Image
               src={Logo}

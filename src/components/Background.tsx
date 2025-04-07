@@ -6,10 +6,8 @@ import Navbar from './Navbar'
 const Background = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="min-h-screen flex flex-col">
-            {/* Navbar fixed at the top */}
             <Navbar />
             
-            {/* Main content area with proper spacing from navbar */}
             <main 
                 className="flex-grow relative overflow-hidden flex flex-col"
                 style={{ backgroundColor: "#f5e8da" }} // Background color
@@ -45,4 +43,4 @@ const Background = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
-export default Background
+export default Background;
