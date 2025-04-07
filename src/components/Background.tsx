@@ -1,5 +1,5 @@
 import React from 'react'
-import BackgroundImage from '@/assets/wave-line-1.webp'
+import BackgroundImage from '@/assets/background.svg'
 import Logo from './logo'
 import Image from 'next/image'
 
@@ -8,18 +8,31 @@ const Background = ({ children }: { children: React.ReactNode }) => {
         <>
         <main 
             className="relative min-h-screen overflow-hidden flex flex-col items-center pt-8 space-y-2"
-            style={{ backgroundColor: "#f5e8da" }} // Added background color
+            style={{ backgroundColor: "#f5e8da" }} // Background color
         >
                 <Logo />
-                <Image
+                {/* Reset the background image styling */}
+                <div 
+                    className="absolute inset-0 overflow-hidden pointer-events-none" 
+                    style={{ zIndex: 0 }} // Try a different z-index
+                >
+                    <Image
                         src={BackgroundImage}
                         alt="Background Decoration"
-                        className="absolute bottom-40 md:bottom-0 md:w-full -z-30 
-                                                                left-1/2 md:left-0 -translate-x-1/2 max-w-screen-2xl md:max-w-full 
-                                                                md:translate-x-0"
+                        className="absolute bottom-0 w-full"
                         priority
-                />
-                {children}
+                        width={1920}
+                        height={1080}
+                        style={{ 
+                            objectFit: 'contain', 
+                            objectPosition: 'bottom',
+                            zIndex: 0
+                        }}
+                    />
+                </div>
+                <div className="relative z-10"> {/* Wrap children in a higher z-index div */}
+                    {children}
+                </div>
         </main>
         </>
     )
