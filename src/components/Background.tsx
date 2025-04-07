@@ -11,7 +11,7 @@ const Background = ({ children }: { children: React.ReactNode }) => {
             
             {/* Main content area with proper spacing from navbar */}
             <main 
-                className="flex-grow relative overflow-hidden flex flex-col items-center"
+                className="flex-grow relative overflow-hidden flex flex-col"
                 style={{ backgroundColor: "#f5e8da" }} // Background color
             >
                 {/* Background image */}
@@ -34,9 +34,11 @@ const Background = ({ children }: { children: React.ReactNode }) => {
                     />
                 </div>
                 
-                {/* Content area with proper padding */}
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pt-6 md:pt-10">
-                    {children}
+                {/* Content area centered both horizontally and vertically */}
+                <div className="relative z-10 flex-grow flex items-center justify-center w-full">
+                    <div className="w-full max-w-xl px-4 py-6 md:py-10">
+                        {children}
+                    </div>
                 </div>
             </main>
         </div>
