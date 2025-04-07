@@ -2,15 +2,19 @@ import React from 'react'
 import BackgroundImage from '@/assets/background.svg'
 import Logo from './logo'
 import Image from 'next/image'
+import Navbar from './Navbar'
 
 const Background = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
         <main 
-            className="relative min-h-screen overflow-hidden flex flex-col items-center pt-8 space-y-2"
+            className="relative min-h-screen overflow-hidden flex flex-col items-center space-y-2"
             style={{ backgroundColor: "#f5e8da" }} // Background color
         >
-                <Logo />
+                <Navbar />
+                <div className="mt-8">
+                    <Logo />
+                </div>
                 {/* Reset the background image styling */}
                 <div 
                     className="absolute inset-0 overflow-hidden pointer-events-none" 

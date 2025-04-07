@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import LogoPicture from '@/assets/TEDxKMUTT_w.png'
+import LogoPicture from '@/assets/logos/TEDxKMUTT_w.png'
 
 const Logo = () => {
   return (
