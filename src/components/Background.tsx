@@ -12,7 +12,7 @@ const Background = ({ children }: { children: React.ReactNode }) => {
             style={{ backgroundColor: "#f5e8da" }} // Background color
         >
                 <Navbar />
-                <div className="mt-8">
+                <div className="mt-16">
                     <Logo />
                 </div>
                 {/* Reset the background image styling */}
