@@ -219,35 +219,35 @@ const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
               transition={{ duration: 0.5 }}
             >
               <div className="absolute -left-2 top-0 h-full w-1 bg-red-500"></div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">
-                {quizState.currentQuestion + 1}. &ldquo;{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}&rdquo;
-              </h2>
+              <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-1">
+  {quizState.currentQuestion + 1}. &ldquo;{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}&rdquo;
+</h2>
               <div className="w-16 h-0.5 bg-red-500 mb-2"></div>
             </motion.div>
 
             {/* Story narrative - now with animation */}
             <motion.div
-              className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic text-lg leading-relaxed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <p className="whitespace-pre-line">
-                {quizState.questions[quizState.currentQuestion]?.question ||
-                  "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ &ldquo;The Silent Loud&rdquo;\nคุณจะได้รับ &ldquo;พลังแรก&rdquo; เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
-              </p>
-            </motion.div>
+  className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic text-base leading-relaxed"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 0.3 }}
+>
+  <p className="whitespace-pre-line">
+    {quizState.questions[quizState.currentQuestion]?.question ||
+      "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ &ldquo;The Silent Loud&rdquo;\nคุณจะได้รับ &ldquo;พลังแรก&rdquo; เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
+  </p>
+</motion.div>
 
             {/* Answer choices styled as story decisions - now with staggered animation */}
             <div className="space-y-3">
             {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
-  <motion.button
-    key={index}
-    onClick={() => handleAnswerClick(answer.dimension, index)}
-    className={`w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
-               hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
-               text-left text-lg border border-gray-200 relative group overflow-hidden
-               ${selectedAnswer === index ? 'bg-red-50 border-red-400' : ''}`} // Add selected styling
+              <motion.button
+  key={index}
+  onClick={() => handleAnswerClick(answer.dimension, index)}
+  className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
+             hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
+             text-left text-base border border-gray-200 relative group overflow-hidden
+             ${selectedAnswer === index ? 'bg-red-50 border-red-400' : ''}`} // Add selected styling
     initial={{ opacity: 0, x: -50 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{
@@ -277,19 +277,19 @@ const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
       transition={{ duration: 0.3 }}
     />
 
-    <div className="relative z-10 flex items-center">
-      <span className={`w-7 h-7 ${
-        selectedAnswer === index ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'
-      } text-center rounded-full mr-3 font-medium group-hover:bg-red-500 group-hover:text-white transition-colors flex items-center justify-center`}>
-        {['A', 'B', 'C', 'D'][index]}
-      </span>
-      <span className={`${
-        selectedAnswer === index ? 'text-red-700' : ''
-      } group-hover:text-red-700 transition-colors`}>
-        {answer.text}
-      </span>
-    </div>
-  </motion.button>
+<div className="relative z-10 flex items-center">
+    <span className={`w-6 h-6 ${
+      selectedAnswer === index ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'
+    } text-center rounded-full mr-3 font-medium group-hover:bg-red-500 group-hover:text-white transition-colors flex items-center justify-center text-sm`}>
+      {['A', 'B', 'C', 'D'][index]}
+    </span>
+    <span className={`${
+      selectedAnswer === index ? 'text-red-700' : ''
+    } group-hover:text-red-700 transition-colors text-base`}>
+      {answer.text}
+    </span>
+  </div>
+</motion.button>
 ))}
             </div>
 
