@@ -1,6 +1,7 @@
 // Example implementation for updating the QuizApp.tsx file
 
 "use client";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { personalityQuestions } from "@/content/th_questions";
 import Background from "./Background";
@@ -31,22 +32,24 @@ export default function PersonalityQuizApp() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
+  const [hasAnimated, setHasAnimated] = useState(false);
+
   const submitToGoogleForm = async (mbtiType: string) => {
     setIsSubmitting(true);
     const formUrl = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
     const formData = new FormData();
-    
+
     formData.append('entry.1125391159', userName);
     formData.append('entry.1183018060', new Date().toISOString());
     formData.append('entry.2109044670', mbtiType);
-    
+
     try {
       await fetch(formUrl, {
         method: 'POST',
         mode: 'no-cors',
         body: formData
       });
-      
+
       setSubmitSuccess(true);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -67,18 +70,23 @@ export default function PersonalityQuizApp() {
     loadQuestions();
   }, []);
 
+  // Reset animation state when the question changes
+  useEffect(() => {
+    setHasAnimated(false);
+  }, [quizState.currentQuestion]);
+
   // Handle answer click
   const handleAnswerClick = (dimension: MBTIDimension): void => {
     setQuizState((prev) => {
       const nextQuestion = prev.currentQuestion + 1;
       const updatedScores = { ...prev.mbtiScores };
-      
+
       // Increment the score for the selected dimension
       updatedScores[dimension] = updatedScores[dimension] + 1;
-      
+
       // Check if we've completed all questions
       const isComplete = nextQuestion >= prev.questions.length;
-      
+
       // If complete, calculate the MBTI type
       let mbtiType = prev.mbtiType;
       if (isComplete) {
@@ -103,7 +111,7 @@ export default function PersonalityQuizApp() {
       scores.T > scores.F ? 'T' : 'F',
       scores.J > scores.P ? 'J' : 'P'
     ].join('');
-    
+
     return type;
   };
 
@@ -120,12 +128,12 @@ export default function PersonalityQuizApp() {
   if (quizState.showResults) {
     return (
       <Background>
-        <div className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl text-gray-800">
+        <div className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
           <h2 className="text-2xl font-bold mb-4">Your MBTI Type</h2>
           <h3 className="text-3xl font-bold text-red-500 mb-6 text-center">
             {quizState.mbtiType}
           </h3>
-          
+
           <div className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic">
             {/* Description based on MBTI type */}
             <p className="mb-2">
@@ -135,24 +143,23 @@ export default function PersonalityQuizApp() {
               {getMBTIDescription(quizState.mbtiType)}
             </p>
           </div>
-          
+
           {!submitSuccess ? (
             <div className="mb-6">
               <label className="block text-gray-800 mb-2">Your Name:</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 className="w-full px-3 py-2 bg-gray-100 text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 mb-4"
                 placeholder="Enter your name"
               />
-              
+
               <button
                 onClick={() => submitToGoogleForm(quizState.mbtiType)}
                 disabled={isSubmitting || !userName.trim()}
-                className={`w-full ${
-                  isSubmitting || !userName.trim() ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'
-                } text-white py-3 px-6 rounded-lg transition duration-300 mb-4`}
+                className={`w-full ${isSubmitting || !userName.trim() ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'
+                  } text-white py-3 px-6 rounded-lg transition duration-300 mb-4`}
               >
                 {isSubmitting ? 'Submitting...' : 'Submit Results'}
               </button>
@@ -162,7 +169,7 @@ export default function PersonalityQuizApp() {
               <p className="text-green-800">Thank you for submitting your results!</p>
             </div>
           )}
-          
+
           <button
             onClick={resetQuiz}
             className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition duration-300"
@@ -187,59 +194,108 @@ export default function PersonalityQuizApp() {
           </div>
         ) : (
           <>
-            {/* Story title with decorative elements */}
-            <div className="relative mb-6">
+            {/* Story title with decorative elements - now with animation */}
+            <motion.div
+              className="relative mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="absolute -left-2 top-0 h-full w-1 bg-red-500"></div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">
                 {quizState.currentQuestion + 1}. "{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}"
               </h2>
               <div className="w-16 h-0.5 bg-red-500 mb-2"></div>
-            </div>
-            
-            {/* Story narrative */}
-            <div className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic text-lg leading-relaxed">
-              {quizState.questions[quizState.currentQuestion]?.question || 
-               "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ \"The Silent Loud\"\nคุณจะได้รับ \"พลังแรก\" เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
-            </div>
-            
-            {/* Decision prompt */}
-            <p className="text-gray-800 font-medium mb-4">
+            </motion.div>
+
+            {/* Story narrative - now with animation */}
+            <motion.div
+              className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic text-lg leading-relaxed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <p className="whitespace-pre-line">
+                {quizState.questions[quizState.currentQuestion]?.question ||
+                  "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ \"The Silent Loud\"\nคุณจะได้รับ \"พลังแรก\" เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
+              </p>
+            </motion.div>
+
+            {/* Decision prompt - now with animation */}
+            <motion.p
+              className="text-gray-800 font-medium mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.7 }}
+            >
               เลือกการกระทำของคุณ:
-            </p>
-            
-            {/* Answer choices styled as story decisions */}
+            </motion.p>
+
+            {/* Answer choices styled as story decisions - now with staggered animation */}
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
-                <button
+                <motion.button
                   key={index}
-                  onClick={() => handleAnswerClick(answer.dimension)}
-                  className="w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
-                           hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
-                           text-left text-lg border border-gray-200 relative group"
+                  onClick={() => !hasAnimated && handleAnswerClick(answer.dimension)}
+                  className={`w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
+                         hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
+                         text-left text-lg border border-gray-200 relative group overflow-hidden`}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.8 + (index * 0.15), // Staggered delay for each answer
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  onAnimationComplete={() => {
+                    if (index === 3) setHasAnimated(true);
+                  }}
                 >
-                  <span className="inline-block w-7 h-7 bg-gray-200 group-hover:bg-red-500 text-center rounded-full mr-3 font-medium text-gray-800 group-hover:text-white transition-colors">
-                    {['A', 'B', 'C', 'D'][index]}
-                  </span>
-                  <span className="group-hover:text-red-700 transition-colors">{answer.text}</span>
-                </button>
+                  {/* Choice selection animation overlay */}
+                  <motion.div
+                    className="absolute inset-0 bg-red-100 origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 0.08 }}
+                    transition={{ duration: 0.3 }}
+                  />
+
+                  <div className="relative z-10 flex items-center">
+                    <span className="inline-block w-7 h-7 bg-gray-200 group-hover:bg-red-500 text-center rounded-full mr-3 font-medium text-gray-800 group-hover:text-white transition-colors flex items-center justify-center">
+                      {['A', 'B', 'C', 'D'][index]}
+                    </span>
+                    <span className="group-hover:text-red-700 transition-colors">{answer.text}</span>
+                  </div>
+                </motion.button>
               )) || <p className="text-gray-800">No options available</p>}
             </div>
-            
-            {/* Story progress indicator */}
-            <div className="mt-8 flex items-center justify-between">
+
+            {/* Story progress indicator - now with animation */}
+            <motion.div
+              className="mt-8 flex items-center justify-between"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.5 }}
+            >
               <div className="text-sm text-gray-500">
                 Episode {quizState.currentQuestion + 1} of {quizState.questions.length}
               </div>
               <div className="h-1 bg-gray-200 flex-grow mx-4 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-red-500" 
-                  style={{width: `${((quizState.currentQuestion + 1) / quizState.questions.length) * 100}%`}}
-                ></div>
+                <motion.div
+                  className="h-full bg-red-500"
+                  initial={{ width: `${((quizState.currentQuestion) / quizState.questions.length) * 100}%` }}
+                  animate={{ width: `${((quizState.currentQuestion + 1) / quizState.questions.length) * 100}%` }}
+                  transition={{ duration: 0.8, delay: 1.6 }}
+                ></motion.div>
               </div>
               <div className="text-sm text-gray-500">
                 {Math.round(((quizState.currentQuestion + 1) / quizState.questions.length) * 100)}%
               </div>
-            </div>
+            </motion.div>
           </>
         )}
       </div>
