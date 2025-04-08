@@ -32,7 +32,7 @@ export default function PersonalityQuizApp() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [_, setHasAnimated] = useState(false);
 
   const submitToGoogleForm = async (mbtiType: string) => {
     setIsSubmitting(true);
@@ -205,8 +205,8 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
             >
               <div className="absolute -left-2 top-0 h-full w-1 bg-red-500"></div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">
-                {quizState.currentQuestion + 1}. "{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}"
-              </h2>
+  {quizState.currentQuestion + 1}. &ldquo;{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}&rdquo;
+</h2>
               <div className="w-16 h-0.5 bg-red-500 mb-2"></div>
             </motion.div>
   
@@ -217,10 +217,10 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <p className="whitespace-pre-line">
-                {quizState.questions[quizState.currentQuestion]?.question ||
-                  "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ \"The Silent Loud\"\nคุณจะได้รับ \"พลังแรก\" เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
-              </p>
+<p className="whitespace-pre-line">
+  {quizState.questions[quizState.currentQuestion]?.question ||
+   "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ &ldquo;The Silent Loud&rdquo;\nคุณจะได้รับ &ldquo;พลังแรก&rdquo; เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
+</p>
             </motion.div>
   
             {/* Decision prompt - now with animation */}
