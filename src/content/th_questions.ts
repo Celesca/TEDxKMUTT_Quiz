@@ -1,69 +1,33 @@
-export const personalityQuestions = [
+import { Question } from "@/types/QuizType";
+
+export const personalityQuestions: Question[] = [
   {
-    question: "What's your ideal way to spend a weekend?",
-    answers: [
-      {
-        text: "Reading a book",
-        points: {
-          thinker: 1,
-          leader: 1,
-        }
-      },
-      {
-        text: "Going to a party",
-        points: {
-          socializer: 1,
-          adventurer: 1,
-        }
-      },
-      {
-        text: "Exploring nature", 
-        points: {
-          adventurer: 1,
-        }
-      },
-      {
-        text: "Organizing a project", 
-        points: {
-          leader: 1,
-        }
-      },
-      {
-        text: "Planning future goals",
-        points: {
-          thinker: 1,
-          leader: 1,
-        }
-      },
-    ],
-  },
-  {
-    question: "Which activity sounds most appealing?",
+    title: "เสียงของการเริ่มต้น",
+    question: `คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ
+
+สวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ "The Silent Loud"
+คุณจะได้รับ "พลังแรก" เพื่อใช้ปลุกความเงียบในโลกใบนี้
+
+คุณจะทำอะไรต่อจากนี้ดี`,
+    dimension: "EI", // This question tests Extroversion vs Introversion
     answers: [
       { 
-        text: "Solving puzzles", 
-        points: {
-          thinker: 1,
-        }
+        text: "เดินออกจากห้อง ตามหาผู้รับเชิญคนอื่นและพูดคุยด้วย", 
+        dimension: "E" // Extrovert
       },
       { 
-        text: "Hosting a gathering", 
-        points: {
-          socializer: 1,
-        }
+        text: "ออกเดินสำรวจเงียบ ๆ ท่ามกลางผู้คน", 
+        dimension: "E" // Extrovert
       },
       { 
-        text: "Going on a hike", 
-        points: {
-          adventurer: 1,
-        }
+        text: "นั่งลงข้างในห้อง เปิดสมุดจด ทบทวนสิ่งที่เกิดขึ้น", 
+        dimension: "I" // Introvert
       },
       { 
-        text: "Organizing a project", 
-        points: {
-          leader: 1,
-        }
-      },
-    ],
+        text: "นั่งอยู่ที่เดิม หยิบหูฟังขึ้นมาใส่ หยุดโลกภายนอกให้เงียบสนิท", 
+        dimension: "I" // Introvert
+      }
+    ]
   },
+  // Add your 3 other questions here with their respective dimensions (TF, SN, JP)
 ];

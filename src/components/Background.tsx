@@ -9,14 +9,14 @@ const Background = ({ children }: { children: React.ReactNode }) => {
             <Navbar />
             
             <main 
-                className="flex-grow relative overflow-hidden flex flex-col"
+               className="flex-grow relative overflow-hidden flex flex-col"
                 style={{ backgroundColor: "#f5e8da" }} // Background color
             >
                 {/* Background image */}
                 <div 
                     className="absolute inset-0 overflow-hidden pointer-events-none" 
                     style={{ zIndex: 0 }}
-                >
+                > 
                     <Image
                         src={BackgroundImage}
                         alt="Background Decoration"

@@ -37,7 +37,7 @@ const Navbar = () => {
           <div className="relative z-10">
             <Button 
               variant="primary" 
-              text="Get My Ticket" 
+              text="Get My Ticket ↗" 
               className="transform scale-75 sm:scale-100 origin-right"
             />
           </div>
