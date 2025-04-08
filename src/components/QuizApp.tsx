@@ -223,16 +223,6 @@ export default function PersonalityQuizApp() {
               </p>
             </motion.div>
 
-            {/* Decision prompt - now with animation */}
-            <motion.p
-              className="text-gray-800 font-medium mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.7 }}
-            >
-              เลือกการกระทำของคุณ:
-            </motion.p>
-
             {/* Answer choices styled as story decisions - now with staggered animation */}
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
