@@ -265,7 +265,7 @@ export default function PersonalityQuizApp() {
                   />
 
                   <div className="relative z-10 flex items-center">
-                    <span className="inline-block w-7 h-7 bg-gray-200 group-hover:bg-red-500 text-center rounded-full mr-3 font-medium text-gray-800 group-hover:text-white transition-colors flex items-center justify-center">
+                    <span className="w-7 h-7 bg-gray-200 group-hover:bg-red-500 text-center rounded-full mr-3 font-medium text-gray-800 group-hover:text-white transition-colors flex items-center justify-center">
                       {['A', 'B', 'C', 'D'][index]}
                     </span>
                     <span className="group-hover:text-red-700 transition-colors">{answer.text}</span>
