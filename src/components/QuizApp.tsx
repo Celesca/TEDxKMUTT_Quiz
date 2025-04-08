@@ -75,35 +75,35 @@ export default function PersonalityQuizApp() {
     setHasAnimated(false);
   }, [quizState.currentQuestion]);
 
-// Make sure the handleAnswerClick function correctly updates state
-const handleAnswerClick = (dimension: MBTIDimension): void => {
-  console.log("Selected dimension:", dimension); // Add debugging
-  
-  setQuizState((prev) => {
-    const nextQuestion = prev.currentQuestion + 1;
-    const updatedScores = { ...prev.mbtiScores };
-    
-    // Increment the score for the selected dimension
-    updatedScores[dimension] = updatedScores[dimension] + 1;
-    
-    // Check if we've completed all questions
-    const isComplete = nextQuestion >= prev.questions.length;
-    
-    // If complete, calculate the MBTI type
-    let mbtiType = prev.mbtiType;
-    if (isComplete) {
-      mbtiType = calculateMBTIType(updatedScores);
-    }
+  // Make sure the handleAnswerClick function correctly updates state
+  const handleAnswerClick = (dimension: MBTIDimension): void => {
+    console.log("Selected dimension:", dimension); // Add debugging
 
-    return {
-      ...prev,
-      mbtiScores: updatedScores,
-      currentQuestion: nextQuestion,
-      showResults: isComplete,
-      mbtiType: mbtiType
-    };
-  });
-};
+    setQuizState((prev) => {
+      const nextQuestion = prev.currentQuestion + 1;
+      const updatedScores = { ...prev.mbtiScores };
+
+      // Increment the score for the selected dimension
+      updatedScores[dimension] = updatedScores[dimension] + 1;
+
+      // Check if we've completed all questions
+      const isComplete = nextQuestion >= prev.questions.length;
+
+      // If complete, calculate the MBTI type
+      let mbtiType = prev.mbtiType;
+      if (isComplete) {
+        mbtiType = calculateMBTIType(updatedScores);
+      }
+
+      return {
+        ...prev,
+        mbtiScores: updatedScores,
+        currentQuestion: nextQuestion,
+        showResults: isComplete,
+        mbtiType: mbtiType
+      };
+    });
+  };
 
   // Calculate MBTI type based on scores
   const calculateMBTIType = (scores: Points): string => {
@@ -205,11 +205,11 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
             >
               <div className="absolute -left-2 top-0 h-full w-1 bg-red-500"></div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">
-  {quizState.currentQuestion + 1}. &ldquo;{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}&rdquo;
-</h2>
+                {quizState.currentQuestion + 1}. &ldquo;{quizState.questions[quizState.currentQuestion]?.title || "เสียงของการเริ่มต้น"}&rdquo;
+              </h2>
               <div className="w-16 h-0.5 bg-red-500 mb-2"></div>
             </motion.div>
-  
+
             {/* Story narrative - now with animation */}
             <motion.div
               className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic text-lg leading-relaxed"
@@ -217,12 +217,12 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-<p className="whitespace-pre-line">
-  {quizState.questions[quizState.currentQuestion]?.question ||
-   "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ &ldquo;The Silent Loud&rdquo;\nคุณจะได้รับ &ldquo;พลังแรก&rdquo; เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
-</p>
+              <p className="whitespace-pre-line">
+                {quizState.questions[quizState.currentQuestion]?.question ||
+                  "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ &ldquo;The Silent Loud&rdquo;\nคุณจะได้รับ &ldquo;พลังแรก&rdquo; เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
+              </p>
             </motion.div>
-  
+
             {/* Decision prompt - now with animation */}
             <motion.p
               className="text-gray-800 font-medium mb-4"
@@ -232,7 +232,7 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
             >
               เลือกการกระทำของคุณ:
             </motion.p>
-  
+
             {/* Answer choices styled as story decisions - now with staggered animation */}
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
@@ -265,7 +265,7 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
                     whileHover={{ scaleX: 0.08 }}
                     transition={{ duration: 0.3 }}
                   />
-  
+
                   <div className="relative z-10 flex items-center">
                     <span className="w-7 h-7 bg-gray-200 group-hover:bg-red-500 text-center rounded-full mr-3 font-medium text-gray-800 group-hover:text-white transition-colors flex items-center justify-center">
                       {['A', 'B', 'C', 'D'][index]}
@@ -275,7 +275,7 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
                 </motion.button>
               )) || <p className="text-gray-800">No options available</p>}
             </div>
-  
+
             {/* Progress indicator section removed */}
           </>
         )}
