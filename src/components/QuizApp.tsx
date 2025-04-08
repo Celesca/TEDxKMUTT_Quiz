@@ -75,33 +75,35 @@ export default function PersonalityQuizApp() {
     setHasAnimated(false);
   }, [quizState.currentQuestion]);
 
-  // Handle answer click
-  const handleAnswerClick = (dimension: MBTIDimension): void => {
-    setQuizState((prev) => {
-      const nextQuestion = prev.currentQuestion + 1;
-      const updatedScores = { ...prev.mbtiScores };
+// Make sure the handleAnswerClick function correctly updates state
+const handleAnswerClick = (dimension: MBTIDimension): void => {
+  console.log("Selected dimension:", dimension); // Add debugging
+  
+  setQuizState((prev) => {
+    const nextQuestion = prev.currentQuestion + 1;
+    const updatedScores = { ...prev.mbtiScores };
+    
+    // Increment the score for the selected dimension
+    updatedScores[dimension] = updatedScores[dimension] + 1;
+    
+    // Check if we've completed all questions
+    const isComplete = nextQuestion >= prev.questions.length;
+    
+    // If complete, calculate the MBTI type
+    let mbtiType = prev.mbtiType;
+    if (isComplete) {
+      mbtiType = calculateMBTIType(updatedScores);
+    }
 
-      // Increment the score for the selected dimension
-      updatedScores[dimension] = updatedScores[dimension] + 1;
-
-      // Check if we've completed all questions
-      const isComplete = nextQuestion >= prev.questions.length;
-
-      // If complete, calculate the MBTI type
-      let mbtiType = prev.mbtiType;
-      if (isComplete) {
-        mbtiType = calculateMBTIType(updatedScores);
-      }
-
-      return {
-        ...prev,
-        mbtiScores: updatedScores,
-        currentQuestion: nextQuestion,
-        showResults: isComplete,
-        mbtiType: mbtiType
-      };
-    });
-  };
+    return {
+      ...prev,
+      mbtiScores: updatedScores,
+      currentQuestion: nextQuestion,
+      showResults: isComplete,
+      mbtiType: mbtiType
+    };
+  });
+};
 
   // Calculate MBTI type based on scores
   const calculateMBTIType = (scores: Points): string => {
@@ -235,27 +237,27 @@ export default function PersonalityQuizApp() {
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
                 <motion.button
-                  key={index}
-                  onClick={() => !hasAnimated && handleAnswerClick(answer.dimension)}
-                  className={`w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
-                         hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
-                         text-left text-lg border border-gray-200 relative group overflow-hidden`}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.8 + (index * 0.15), // Staggered delay for each answer
-                    ease: "easeOut"
-                  }}
-                  whileHover={{
-                    scale: 1.02,
-                    transition: { duration: 0.2 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  onAnimationComplete={() => {
-                    if (index === 3) setHasAnimated(true);
-                  }}
-                >
+  key={index}
+  onClick={() => handleAnswerClick(answer.dimension)}
+  className={`w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
+         hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
+         text-left text-lg border border-gray-200 relative group overflow-hidden`}
+  initial={{ opacity: 0, x: -50 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{
+    duration: 0.5,
+    delay: 0.8 + (index * 0.15),
+    ease: "easeOut"
+  }}
+  whileHover={{
+    scale: 1.02,
+    transition: { duration: 0.2 }
+  }}
+  whileTap={{ scale: 0.98 }}
+  onAnimationComplete={() => {
+    if (index === 3) setHasAnimated(true);
+  }}
+>
                   {/* Choice selection animation overlay */}
                   <motion.div
                     className="absolute inset-0 bg-red-100 origin-left"
