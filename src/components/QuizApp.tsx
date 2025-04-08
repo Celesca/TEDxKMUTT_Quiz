@@ -32,7 +32,7 @@ export default function PersonalityQuizApp() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
-  const [_, setHasAnimated] = useState(false);
+  const [, setHasAnimated] = useState(false);
 
   const submitToGoogleForm = async (mbtiType: string) => {
     setIsSubmitting(true);
