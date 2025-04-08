@@ -209,7 +209,7 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
               </h2>
               <div className="w-16 h-0.5 bg-red-500 mb-2"></div>
             </motion.div>
-
+  
             {/* Story narrative - now with animation */}
             <motion.div
               className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic text-lg leading-relaxed"
@@ -222,7 +222,7 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
                   "คุณลืมตาขึ้นมาในห้องสีขาวที่เงียบจนได้ยินเสียงหัวใจเต้นเบา ๆ\n\nสวัสดีผู้ได้รับเชิญ คุณได้เข้าร่วมโปรเจกต์ลับ \"The Silent Loud\"\nคุณจะได้รับ \"พลังแรก\" เพื่อใช้ปลุกความเงียบในโลกใบนี้\n\nคุณจะทำอะไรต่อจากนี้ดี"}
               </p>
             </motion.div>
-
+  
             {/* Decision prompt - now with animation */}
             <motion.p
               className="text-gray-800 font-medium mb-4"
@@ -232,32 +232,32 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
             >
               เลือกการกระทำของคุณ:
             </motion.p>
-
+  
             {/* Answer choices styled as story decisions - now with staggered animation */}
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
                 <motion.button
-  key={index}
-  onClick={() => handleAnswerClick(answer.dimension)}
-  className={`w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
-         hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
-         text-left text-lg border border-gray-200 relative group overflow-hidden`}
-  initial={{ opacity: 0, x: -50 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{
-    duration: 0.5,
-    delay: 0.8 + (index * 0.15),
-    ease: "easeOut"
-  }}
-  whileHover={{
-    scale: 1.02,
-    transition: { duration: 0.2 }
-  }}
-  whileTap={{ scale: 0.98 }}
-  onAnimationComplete={() => {
-    if (index === 3) setHasAnimated(true);
-  }}
->
+                  key={index}
+                  onClick={() => handleAnswerClick(answer.dimension)}
+                  className={`w-full bg-gray-50 text-gray-800 py-4 px-6 rounded-lg
+                         hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
+                         text-left text-lg border border-gray-200 relative group overflow-hidden`}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.8 + (index * 0.15),
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  onAnimationComplete={() => {
+                    if (index === 3) setHasAnimated(true);
+                  }}
+                >
                   {/* Choice selection animation overlay */}
                   <motion.div
                     className="absolute inset-0 bg-red-100 origin-left"
@@ -265,7 +265,7 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
                     whileHover={{ scaleX: 0.08 }}
                     transition={{ duration: 0.3 }}
                   />
-
+  
                   <div className="relative z-10 flex items-center">
                     <span className="w-7 h-7 bg-gray-200 group-hover:bg-red-500 text-center rounded-full mr-3 font-medium text-gray-800 group-hover:text-white transition-colors flex items-center justify-center">
                       {['A', 'B', 'C', 'D'][index]}
@@ -275,29 +275,8 @@ const handleAnswerClick = (dimension: MBTIDimension): void => {
                 </motion.button>
               )) || <p className="text-gray-800">No options available</p>}
             </div>
-
-            {/* Story progress indicator - now with animation */}
-            <motion.div
-              className="mt-8 flex items-center justify-between"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.5 }}
-            >
-              <div className="text-sm text-gray-500">
-                Episode {quizState.currentQuestion + 1} of {quizState.questions.length}
-              </div>
-              <div className="h-1 bg-gray-200 flex-grow mx-4 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-red-500"
-                  initial={{ width: `${((quizState.currentQuestion) / quizState.questions.length) * 100}%` }}
-                  animate={{ width: `${((quizState.currentQuestion + 1) / quizState.questions.length) * 100}%` }}
-                  transition={{ duration: 0.8, delay: 1.6 }}
-                ></motion.div>
-              </div>
-              <div className="text-sm text-gray-500">
-                {Math.round(((quizState.currentQuestion + 1) / quizState.questions.length) * 100)}%
-              </div>
-            </motion.div>
+  
+            {/* Progress indicator section removed */}
           </>
         )}
       </div>
