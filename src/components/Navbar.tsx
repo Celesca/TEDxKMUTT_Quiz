@@ -35,11 +35,13 @@ const Navbar = () => {
           </Link>
           
           <div className="relative z-10">
+            <a href="https://thesilentloud.tedxkmutt.com/" target="_blank" rel="noopener noreferrer"> 
             <Button 
               variant="primary" 
               text="Get My Ticket ↗" 
               className="transform scale-75 sm:scale-100 origin-right"
             />
+            </a>
           </div>
         </nav>
       </div>
