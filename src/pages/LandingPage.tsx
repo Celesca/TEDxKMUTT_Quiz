@@ -34,7 +34,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onContinue }) => {
         <div className="space-y-8">
           {/* Quote and message */}
           <div className="space-y-4">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+            <h1 className="text-2xl md:text-3xl text-center font-bold text-gray-800">
               ค้นหาตัวตนของตัวเองในโลกของ <span className="text-red-600">Silent Loud</span>
             </h1>
             
@@ -47,7 +47,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onContinue }) => {
           </div>
           
           {/* Button container - centered */}
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center">
             <Button
               onClick={onContinue}
               variant="primary"
