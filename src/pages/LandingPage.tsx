@@ -15,7 +15,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onContinue }) => {
   return (
     <Background>
       <motion.div
-        className=" rounded-lg p-6 md:p-8 max-w-xl w-full"
+        className="rounded-lg p-6 md:p-8 max-w-xl w-full"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -41,7 +41,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onContinue }) => {
             <div className="relative pl-4 py-2">
               <div className="absolute left-0 top-0 h-full w-1 bg-red-500"></div>
               <p className="text-gray-700 italic text-lg">
-                "เมื่อความเงียบไม่ได้หมายถึงการไร้ตัวตน และเสียงไม่ได้บอกถึงการมีอยู่เสมอไป"
+                &ldquo;เมื่อความเงียบไม่ได้หมายถึงการไร้ตัวตน และเสียงไม่ได้บอกถึงการมีอยู่เสมอไป&rdquo;
               </p>
             </div>
           </div>
