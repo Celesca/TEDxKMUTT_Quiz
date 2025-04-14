@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import Button from './Button';
 import Logo from '@/assets/logos/TEDxKMUTT_b.png';
 import Strip from '@/assets/strip.png';
