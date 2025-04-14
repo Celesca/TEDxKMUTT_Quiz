@@ -84,11 +84,6 @@ export default function PersonalityQuizApp() {
     loadQuestions();
   }, []);
 
-  // Reset animation state when the question changes
-  useEffect(() => {
-    setHasAnimated(false);
-  }, [quizState.currentQuestion]);
-
   // Update your reset animation effect to also reset the selected answer
   useEffect(() => {
     setHasAnimated(false);
@@ -132,17 +127,22 @@ export default function PersonalityQuizApp() {
     }, 500); // 500ms delay to show the selection
   };
 
-  // Calculate MBTI type based on scores
-  const calculateMBTIType = (scores: Points): string => {
-    const type = [
-      scores.E > scores.I ? 'E' : 'I',
-      scores.S > scores.N ? 'S' : 'N',
-      scores.T > scores.F ? 'T' : 'F',
-      scores.J > scores.P ? 'J' : 'P'
-    ].join('');
-
-    return type;
-  };
+// Modify the calculateMBTIType function to auto-submit the form
+const calculateMBTIType = (scores: Points): string => {
+  const type = [
+    scores.E > scores.I ? 'E' : 'I',
+    scores.S > scores.N ? 'S' : 'N',
+    scores.T > scores.F ? 'T' : 'F',
+    scores.J > scores.P ? 'J' : 'P'
+  ].join('');
+  
+  // Automatically submit the form when we determine the MBTI type
+  setTimeout(() => {
+    submitToGoogleForm(type);
+  }, 500);
+  
+  return type;
+};
 
   const resetQuiz = (): void => {
     setQuizState({
@@ -154,61 +154,60 @@ export default function PersonalityQuizApp() {
     setUserName("");
   };
 
-  if (quizState.showResults) {
-    return (
-      <Background>
-        <div className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
-          <h2 className="text-2xl font-bold mb-4">Your MBTI Type</h2>
-          <h3 className="text-3xl font-bold text-red-500 mb-6 text-center">
-            {quizState.mbtiType}
-          </h3>
+  // Now let's update the results UI
+if (quizState.showResults) {
+  return (
+    <Background>
+      <div className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl">
+        <h2 className="text-2xl font-bold mb-4">Your MBTI Type</h2>
+        <h3 className="text-3xl font-bold text-red-500 mb-6 text-center">
+          {quizState.mbtiType}
+        </h3>
 
-          <div className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic">
-            {/* Description based on MBTI type */}
-            <p className="mb-2">
-              You are a <span className="font-semibold">{quizState.mbtiType}</span> personality type.
-            </p>
-            <p>
-              {getMBTIDescription(quizState.mbtiType)}
-            </p>
-          </div>
+        <div className="bg-gray-50 border-l-2 border-gray-300 pl-4 py-3 mb-6 text-gray-700 italic">
+          {/* Description based on MBTI type */}
+          <p className="mb-2">
+            You are a <span className="font-semibold">{quizState.mbtiType}</span> personality type.
+          </p>
+          <p>
+            {getMBTIDescription(quizState.mbtiType)}
+          </p>
+        </div>
 
-          {!submitSuccess ? (
-            <div className="mb-6">
-              <label className="block text-gray-800 mb-2">Your Name:</label>
-              <input
-                type="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-100 text-gray-800 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 mb-4"
-                placeholder="Enter your name"
-              />
-
-              <button
-                onClick={() => submitToGoogleForm(quizState.mbtiType)}
-                disabled={isSubmitting || !userName.trim()}
-                className={`w-full ${isSubmitting || !userName.trim() ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'
-                  } text-white py-3 px-6 rounded-lg transition duration-300 mb-4`}
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit Results'}
-              </button>
+        {/* Status indicator */}
+        <div className="mb-6">
+          {isSubmitting ? (
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-blue-700 flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Saving your results...
+              </p>
+            </div>
+          ) : submitSuccess ? (
+            <div className="p-4 bg-green-100 border border-green-500 rounded-lg">
+              <p className="text-green-800 text-center">Your results have been saved!</p>
             </div>
           ) : (
-            <div className="mb-6 p-4 bg-green-100 border border-green-500 rounded-lg">
-              <p className="text-green-800">Thank you for submitting your results!</p>
+            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-yellow-700 text-center">Preparing your results...</p>
             </div>
           )}
-
-          <button
-            onClick={resetQuiz}
-            className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition duration-300"
-          >
-            Try Again
-          </button>
         </div>
-      </Background>
-    );
-  }
+
+        {/* Keep the try again button */}
+        <button
+          onClick={resetQuiz}
+          className="w-full bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition duration-300"
+        >
+          Try Again
+        </button>
+      </div>
+    </Background>
+  );
+}
 
   return (
     <Background>
