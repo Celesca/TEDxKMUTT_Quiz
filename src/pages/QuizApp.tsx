@@ -4,7 +4,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { personalityQuestions } from "@/content/th_questions";
-import Background from "./Background";
+import Background from "@/components/Background";
 import { QuizState, Points, MBTIDimension } from "@/types/QuizType";
 
 const INITIAL_POINTS = 0;
