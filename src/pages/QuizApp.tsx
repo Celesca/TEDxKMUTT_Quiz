@@ -117,45 +117,48 @@ function getMBTICardPath(type: string): string {
     setSelectedAnswer(null); // Reset selected answer when question changes
   }, [quizState.currentQuestion]);
 
-  // Modify the handleAnswerClick function for faster transitions
-  const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
-    console.log("Selected dimension:", dimension);
-
-    // Set the selected answer index
-    setSelectedAnswer(index);
-
-    // Start container fade-out animation
-    setIsTransitioning(true);
-
-    // Shorter delay (300ms instead of 500ms)
-    setTimeout(() => {
-      setQuizState((prev) => {
-        const nextQuestion = prev.currentQuestion + 1;
-        const updatedScores = { ...prev.mbtiScores };
-
-        updatedScores[dimension] = updatedScores[dimension] + 1;
-        const isComplete = nextQuestion >= prev.questions.length;
-
-        let mbtiType = prev.mbtiType;
-        if (isComplete) {
-          mbtiType = calculateMBTIType(updatedScores);
-        }
-
-        return {
-          ...prev,
-          mbtiScores: updatedScores,
-          currentQuestion: nextQuestion,
-          showResults: isComplete,
-          mbtiType: mbtiType
-        };
-      });
-
-      // Quick delay before starting fade-in animation
+    // Modify the handleAnswerClick function to properly reset animations
+    const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
+      console.log("Selected dimension:", dimension);
+  
+      // Set the selected answer index
+      setSelectedAnswer(index);
+  
+      // Start container fade-out animation
+      setIsTransitioning(true);
+  
+      // Shorter delay (300ms instead of 500ms)
       setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
-    }, 300); // Faster transition (was 500ms)
-  };
+        // Reset the selected answer before updating the question
+        setSelectedAnswer(null);
+        
+        setQuizState((prev) => {
+          const nextQuestion = prev.currentQuestion + 1;
+          const updatedScores = { ...prev.mbtiScores };
+  
+          updatedScores[dimension] = updatedScores[dimension] + 1;
+          const isComplete = nextQuestion >= prev.questions.length;
+  
+          let mbtiType = prev.mbtiType;
+          if (isComplete) {
+            mbtiType = calculateMBTIType(updatedScores);
+          }
+  
+          return {
+            ...prev,
+            mbtiScores: updatedScores,
+            currentQuestion: nextQuestion,
+            showResults: isComplete,
+            mbtiType: mbtiType
+          };
+        });
+  
+        // Quick delay before starting fade-in animation
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 100);
+      }, 300); // Faster transition (was 500ms)
+    };
 
   // Fade-in
   useEffect(() => {
