@@ -38,12 +38,13 @@ const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
   const submitToGoogleForm = async (mbtiType: string) => {
     setIsSubmitting(true);
-    const formUrl = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdEuU3ug9Tf9OWpM1heoV8rDq06y_q_rRRZM6Jx58XrKRNU6Q/formResponse';
     const formData = new FormData();
 
-    formData.append('entry.1125391159', userName);
-    formData.append('entry.1183018060', new Date().toISOString());
-    formData.append('entry.2109044670', mbtiType);
+    // https://docs.google.com/forms/d/e/1FAIpQLSdEuU3ug9Tf9OWpM1heoV8rDq06y_q_rRRZM6Jx58XrKRNU6Q/viewform?usp=pp_url&entry.1485371814=25/2/2025&entry.424896981=ENTJ
+
+    formData.append('entry.1485371814', new Date().toISOString());
+    formData.append('entry.424896981', mbtiType);
 
     try {
       await fetch(formUrl, {
