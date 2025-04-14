@@ -208,13 +208,12 @@ function getMBTICardPath(type: string): string {
               className="w-full rounded-lg shadow-xl"
             />
           </div>
-
- {/* Action Buttons - positioned below the image */}
- <div className="flex gap-4 mt-6 w-full">
+{/* Action Buttons - positioned below the image */}
+<div className="flex gap-4 mt-6 w-full">
     <Button 
       onClick={resetQuiz}
       variant="secondary"
-      className="flex-1"
+      className="flex-1 items-center"
       iconLeft={
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -225,7 +224,7 @@ function getMBTICardPath(type: string): string {
     <Button
       onClick={() => downloadResultCard()}
       variant="primary"
-      className="flex-1"
+      className="flex-1 items-center"
       iconLeft={
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
