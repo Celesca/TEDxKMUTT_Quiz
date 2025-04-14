@@ -313,20 +313,27 @@ export default function PersonalityQuizApp() {
                 whileTap={{ scale: 0.98 }}
                 disabled={selectedAnswer !== null}
               >
-                {/* Red background animation */}
-                <motion.div
-                  key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
-                  className="absolute inset-0 bg-red-100 origin-left"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
-                  animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-              
-                <div className="relative z-10 flex items-center">
-                  {/* Rest of button content */}
-                </div>
-              </motion.button>
+                  {/* Rest of button content remains the same */}
+                  <motion.div
+    key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
+    className="absolute inset-0 bg-red-100 origin-left"
+    initial={{ scaleX: 0 }}
+    whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
+    animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
+    transition={{ duration: 0.3 }}
+  />
+
+                  <div className="relative z-10 flex items-center">
+                    <span className={`w-6 h-6 ${selectedAnswer === index ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'
+                      } text-center rounded-full mr-3 font-medium group-hover:bg-red-500 group-hover:text-white transition-colors flex items-center justify-center text-sm`}>
+                      {['A', 'B', 'C', 'D'][index]}
+                    </span>
+                    <span className={`${selectedAnswer === index ? 'text-red-700' : ''
+                      } group-hover:text-red-700 transition-colors text-base`}>
+                      {answer.text}
+                    </span>
+                  </div>
+                </motion.button>
               ))}
             </div>
           </>
