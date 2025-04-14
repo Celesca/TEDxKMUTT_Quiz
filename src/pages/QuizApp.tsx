@@ -8,6 +8,7 @@ import { personalityQuestions } from "@/content/th_questions";
 import Background from "@/components/Background";
 import { QuizState, Points, MBTIDimension } from "@/types/QuizType";
 import Button from "@/components/Button";
+import Image from "next/image";
 
 const INITIAL_POINTS = 0;
 const INITIAL_QUIZ_STATE: QuizState = {
@@ -202,7 +203,7 @@ function getMBTICardPath(type: string): string {
         >
           {/* Result card content to be captured - only the image */}
           <div ref={resultCardRef} className="w-full">
-            <img 
+            <Image
               src={getMBTICardPath(quizState.mbtiType)}
               alt={`${quizState.mbtiType} Personality Card`}
               className="w-full rounded-lg shadow-xl"
