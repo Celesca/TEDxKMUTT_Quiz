@@ -92,9 +92,10 @@ export default function PersonalityQuizApp() {
     }
   };
 
-  // Replace with this function to get the image path
+// Replace with this function to get the image path
 function getMBTICardPath(type: string): string {
-  return `/src/assets/cards/${type}_Card.png`;
+  // Using the public folder path instead of src
+  return `/cards/${type}_Card.png`;
 }
 
   const loadQuestions = async () => {
