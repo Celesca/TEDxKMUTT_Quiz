@@ -93,11 +93,11 @@ export default function PersonalityQuizApp() {
     }
   };
 
-// Replace with this function to get the image path
-function getMBTICardPath(type: string): string {
-  // Using the public folder path instead of src
-  return `/cards/${type}_Card.png`;
-}
+  // Replace with this function to get the image path
+  function getMBTICardPath(type: string): string {
+    // Using the public folder path instead of src
+    return `/cards/${type}_Card.png`;
+  }
 
   const loadQuestions = async () => {
     setQuizState((prev) => ({
@@ -117,48 +117,49 @@ function getMBTICardPath(type: string): string {
     setSelectedAnswer(null); // Reset selected answer when question changes
   }, [quizState.currentQuestion]);
 
-    // Modify the handleAnswerClick function to properly reset animations
-    const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
-      console.log("Selected dimension:", dimension);
-  
-      // Set the selected answer index
-      setSelectedAnswer(index);
-  
-      // Start container fade-out animation
-      setIsTransitioning(true);
-  
-      // Shorter delay (300ms instead of 500ms)
+  // Modify the handleAnswerClick function to ensure proper reset of animations and styles
+  const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
+    console.log("Selected dimension:", dimension);
+
+    // Set the selected answer index
+    setSelectedAnswer(index);
+
+    // Start container fade-out animation
+    setIsTransitioning(true);
+
+    // Shorter delay (300ms instead of 500ms)
+    setTimeout(() => {
+      // Update the quiz state first
+      setQuizState((prev) => {
+        const nextQuestion = prev.currentQuestion + 1;
+        const updatedScores = { ...prev.mbtiScores };
+
+        updatedScores[dimension] = updatedScores[dimension] + 1;
+        const isComplete = nextQuestion >= prev.questions.length;
+
+        let mbtiType = prev.mbtiType;
+        if (isComplete) {
+          mbtiType = calculateMBTIType(updatedScores);
+        }
+
+        return {
+          ...prev,
+          mbtiScores: updatedScores,
+          currentQuestion: nextQuestion,
+          showResults: isComplete,
+          mbtiType: mbtiType
+        };
+      });
+
+      // Force reset selected answer state
+      setSelectedAnswer(null);
+
+      // Quick delay before starting fade-in animation
       setTimeout(() => {
-        // Reset the selected answer before updating the question
-        setSelectedAnswer(null);
-        
-        setQuizState((prev) => {
-          const nextQuestion = prev.currentQuestion + 1;
-          const updatedScores = { ...prev.mbtiScores };
-  
-          updatedScores[dimension] = updatedScores[dimension] + 1;
-          const isComplete = nextQuestion >= prev.questions.length;
-  
-          let mbtiType = prev.mbtiType;
-          if (isComplete) {
-            mbtiType = calculateMBTIType(updatedScores);
-          }
-  
-          return {
-            ...prev,
-            mbtiScores: updatedScores,
-            currentQuestion: nextQuestion,
-            showResults: isComplete,
-            mbtiType: mbtiType
-          };
-        });
-  
-        // Quick delay before starting fade-in animation
-        setTimeout(() => {
-          setIsTransitioning(false);
-        }, 100);
-      }, 300); // Faster transition (was 500ms)
-    };
+        setIsTransitioning(false);
+      }, 100);
+    }, 300); // Faster transition (was 500ms)
+  };
 
   // Fade-in
   useEffect(() => {
@@ -212,31 +213,31 @@ function getMBTICardPath(type: string): string {
               className="w-full rounded-lg shadow-xl"
             />
           </div>
-{/* Action Buttons - positioned below the image */}
-<div className="flex gap-4 mt-6 w-full">
-    <Button 
-      onClick={resetQuiz}
-      variant="secondary"
-      className="flex-1 items-center"
-      iconLeft={
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-      }
-      text="Try Again"
-    />
-    <Button
-      onClick={() => downloadResultCard()}
-      variant="primary"
-      className="flex-1 items-center"
-      iconLeft={
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-      }
-      text="Download"
-    />
-  </div>
+          {/* Action Buttons - positioned below the image */}
+          <div className="flex gap-4 mt-6 w-full">
+            <Button
+              onClick={resetQuiz}
+              variant="secondary"
+              className="flex-1 items-center"
+              iconLeft={
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              }
+              text="Try Again"
+            />
+            <Button
+              onClick={() => downloadResultCard()}
+              variant="primary"
+              className="flex-1 items-center"
+              iconLeft={
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              }
+              text="Download"
+            />
+          </div>
         </motion.div>
       </Background>
     );
@@ -292,46 +293,40 @@ function getMBTICardPath(type: string): string {
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
                 <motion.button
-                  key={index}
-                  onClick={() => handleAnswerClick(answer.dimension, index)}
-                  className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
-             hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
-             text-left text-base border border-gray-200 relative group overflow-hidden
-             ${selectedAnswer === index ? 'bg-red-50 border-red-400' : ''}`}
-                  initial={{ opacity: 0, x: -20 }} // Less movement
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    duration: 0.3, // Faster
-                    delay: 0.2 + (index * 0.08), // Much shorter stagger delay
-                    ease: "easeOut"
-                  }}
-                  whileHover={{
-                    scale: selectedAnswer === null ? 1.02 : 1,
-                    transition: { duration: 0.2 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  disabled={selectedAnswer !== null}
-                >
-                  {/* Rest of button content remains the same */}
-                  <motion.div
-                    className={`absolute inset-0 bg-red-100 origin-left ${selectedAnswer === index ? 'scale-x-100' : ''}`}
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
-                    animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
-
-                  <div className="relative z-10 flex items-center">
-                    <span className={`w-6 h-6 ${selectedAnswer === index ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'
-                      } text-center rounded-full mr-3 font-medium group-hover:bg-red-500 group-hover:text-white transition-colors flex items-center justify-center text-sm`}>
-                      {['A', 'B', 'C', 'D'][index]}
-                    </span>
-                    <span className={`${selectedAnswer === index ? 'text-red-700' : ''
-                      } group-hover:text-red-700 transition-colors text-base`}>
-                      {answer.text}
-                    </span>
-                  </div>
-                </motion.button>
+                key={`answer-${quizState.currentQuestion}-${index}`} // Key based on both question and answer index
+                onClick={() => handleAnswerClick(answer.dimension, index)}
+                className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
+                  hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
+                  text-left text-base border border-gray-200 relative group overflow-hidden
+                  ${selectedAnswer === index ? 'bg-red-50 border-red-400' : ''}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: 0.2 + (index * 0.08),
+                  ease: "easeOut"
+                }}
+                whileHover={{
+                  scale: selectedAnswer === null ? 1.02 : 1,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.98 }}
+                disabled={selectedAnswer !== null}
+              >
+                {/* Red background animation */}
+                <motion.div
+                  key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
+                  className="absolute inset-0 bg-red-100 origin-left"
+                  initial={{ scaleX: 0 }}
+                  whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
+                  animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              
+                <div className="relative z-10 flex items-center">
+                  {/* Rest of button content */}
+                </div>
+              </motion.button>
               ))}
             </div>
           </>
