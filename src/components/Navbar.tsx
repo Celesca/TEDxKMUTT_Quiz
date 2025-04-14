@@ -6,6 +6,11 @@ import Logo from '@/assets/logos/TEDxKMUTT_b.png';
 import Strip from '@/assets/strip.png';
 
 const Navbar = () => {
+
+    const refreshPage = () => {
+      window.location.reload();
+    };
+
   return (
     <div className="sticky top-0 z-50 w-full">
       {/* The strip decoration - positioned below the navbar */}
@@ -23,7 +28,11 @@ const Navbar = () => {
       {/* The actual navbar with white background */}
       <div className="relative w-full bg-white shadow-lg">
         <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 py-2">
-          <Link href="/#" className="relative z-10">
+        <button 
+            onClick={refreshPage} 
+            className="relative z-10 focus:outline-none"
+            aria-label="Refresh page"
+          >
             <Image
               src={Logo}
               alt="Logo of TEDxKMUTT"
@@ -32,7 +41,7 @@ const Navbar = () => {
               height={40}
               className="w-28 sm:w-40"
             />
-          </Link>
+          </button>
           
           <div className="relative z-10">
             <a href="https://thesilentloud.tedxkmutt.com/" target="_blank" rel="noopener noreferrer"> 
