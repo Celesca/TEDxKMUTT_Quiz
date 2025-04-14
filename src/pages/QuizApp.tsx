@@ -8,6 +8,7 @@ import { personalityQuestions } from "@/content/th_questions";
 import Background from "@/components/Background";
 import { QuizState, Points, MBTIDimension } from "@/types/QuizType";
 
+
 const INITIAL_POINTS = 0;
 const INITIAL_QUIZ_STATE: QuizState = {
   currentQuestion: 0,
@@ -70,26 +71,31 @@ export default function PersonalityQuizApp() {
     }
   };
 
-    // Function to download the result card as an image
-    const downloadResultCard = async () => {
-      if (!resultCardRef.current) return;
-  
-      try {
-        const canvas = await html2canvas(resultCardRef.current, {
-          scale: 2, // Higher resolution
-          backgroundColor: null,
-          logging: false,
-        });
-        
-        const dataURL = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.download = `${quizState.mbtiType}_Result.png`;
-        link.href = dataURL;
-        link.click();
-      } catch (error) {
-        console.error("Error generating download:", error);
-      }
-    };
+  // Function to download the result card as an image
+  const downloadResultCard = async () => {
+    if (!resultCardRef.current) return;
+
+    try {
+      const canvas = await html2canvas(resultCardRef.current, {
+        scale: 2, // Higher resolution
+        backgroundColor: null,
+        logging: false,
+      });
+
+      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `${quizState.mbtiType}_Result.png`;
+      link.href = dataURL;
+      link.click();
+    } catch (error) {
+      console.error("Error generating download:", error);
+    }
+  };
+
+  // Replace with this function to get the image path
+function getMBTICardPath(type: string): string {
+  return `/src/assets/cards/${type}_Card.png`;
+}
 
   const loadQuestions = async () => {
     setQuizState((prev) => ({
@@ -203,7 +209,7 @@ export default function PersonalityQuizApp() {
             {/* MBTI Type Card Image */}
             <div className="mb-6">
               <img 
-                src={`/src/assets/cards/${quizState.mbtiType}_Card.png`} 
+                src={getMBTICardPath(quizState.mbtiType)}
                 alt={`${quizState.mbtiType} Personality Card`}
                 className="w-full rounded-lg shadow-md"
               />
