@@ -11,7 +11,6 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50 w-full">
-      {/* The strip decoration - positioned below the navbar */}
       
       {/* The actual navbar with white background */}
       <div className="relative w-full bg-white shadow-lg">

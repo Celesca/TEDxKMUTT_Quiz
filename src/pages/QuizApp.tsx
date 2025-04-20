@@ -95,7 +95,6 @@ export default function PersonalityQuizApp() {
 
   // Replace with this function to get the image path
   function getMBTICardPath(type: string): string {
-    // Using the public folder path instead of src
     return `/cards/${type}_Card.png`;
   }
 
@@ -170,11 +169,11 @@ export default function PersonalityQuizApp() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Modify the calculateMBTIType function to auto-submit the form
+  // Modify the calculateMBTIType function to exclude the S/N dimension
   const calculateMBTIType = (scores: Points): string => {
+    // Only use the E/I, T/F, and J/P dimensions
     const type = [
       scores.E > scores.I ? 'E' : 'I',
-      scores.S > scores.N ? 'S' : 'N',
       scores.T > scores.F ? 'T' : 'F',
       scores.J > scores.P ? 'J' : 'P'
     ].join('');
@@ -293,35 +292,35 @@ export default function PersonalityQuizApp() {
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
                 <motion.button
-                key={`answer-${quizState.currentQuestion}-${index}`} // Key based on both question and answer index
-                onClick={() => handleAnswerClick(answer.dimension, index)}
-                className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
+                  key={`answer-${quizState.currentQuestion}-${index}`} // Key based on both question and answer index
+                  onClick={() => handleAnswerClick(answer.dimension, index)}
+                  className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
                   hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
                   text-left text-base border border-gray-200 relative group overflow-hidden
                   ${selectedAnswer === index ? 'bg-red-50 border-red-400' : ''}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: 0.2 + (index * 0.08),
-                  ease: "easeOut"
-                }}
-                whileHover={{
-                  scale: selectedAnswer === null ? 1.02 : 1,
-                  transition: { duration: 0.2 }
-                }}
-                whileTap={{ scale: 0.98 }}
-                disabled={selectedAnswer !== null}
-              >
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: 0.2 + (index * 0.08),
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    scale: selectedAnswer === null ? 1.02 : 1,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={selectedAnswer !== null}
+                >
                   {/* Rest of button content remains the same */}
                   <motion.div
-    key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
-    className="absolute inset-0 bg-red-100 origin-left"
-    initial={{ scaleX: 0 }}
-    whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
-    animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
-    transition={{ duration: 0.3 }}
-  />
+                    key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
+                    className="absolute inset-0 bg-red-100 origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
+                    animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
 
                   <div className="relative z-10 flex items-center">
                     <span className={`w-6 h-6 ${selectedAnswer === index ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'
