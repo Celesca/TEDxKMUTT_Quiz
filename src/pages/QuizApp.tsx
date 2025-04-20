@@ -225,7 +225,7 @@ const copyDiscountCode = () => {
         >
           {/* Result card content to be captured - only the image */}
           <div className="mb-4 w-full text-center">
-            <h2 className="text-2xl font-bold text-white drop-shadow-md mb-2">
+            <h2 className="text-2xl font-bold text-black drop-shadow-md mb-2">
               คุณคือ..
             </h2>
           </div>
@@ -301,7 +301,7 @@ const copyDiscountCode = () => {
   </div>
   
   <h3 className="text-2xl font-bold text-gray-800 mb-3">ขอบคุณที่มาร่วมสนุกกับเรา!</h3>
-  <p className="text-gray-600 mb-5 text-lg">โค้ดส่วนลด 10% สำหรับบัตร</p>
+  <p className="text-gray-600 mb-5 text-lg">โค้ดส่วนลด 10% สำหรับบัตร และรูปภาพแสนน่ารัก!</p>
   
   <div className="w-full p-4 bg-gradient-to-r from-red-50 to-gray-50 rounded-lg flex items-center justify-between mb-5 border border-red-100 shadow-sm">
     <span className="font-mono font-bold text-red-600 text-xl tracking-wider">{discountCode}</span>
