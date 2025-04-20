@@ -77,7 +77,7 @@ export default function PersonalityQuizApp() {
       const link = document.createElement('a');
       
       // Set the download filename
-      link.download = `${quizState.mbtiType}_Result.png`;
+      link.download = `${quizState.mbtiType}.png`;
       
       // Set the href to the public path of the image
       // This points directly to the image file in the public folder
