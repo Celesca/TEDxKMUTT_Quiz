@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import Button from './Button';
 import Logo from '@/assets/logos/TEDxKMUTT_b.png';
-import Strip from '@/assets/strip.png';
 
 const Navbar = () => {
 
@@ -13,16 +12,6 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-50 w-full">
       {/* The strip decoration - positioned below the navbar */}
-      <div className="absolute inset-x-0 bottom-0 h-2 overflow-hidden">
-        <Image
-          src={Strip}
-          alt=""
-          width={3000}
-          height={600}
-          className="w-full scale-125"
-          priority
-        />
-      </div>
       
       {/* The actual navbar with white background */}
       <div className="relative w-full bg-white shadow-lg">
