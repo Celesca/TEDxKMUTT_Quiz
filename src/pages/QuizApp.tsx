@@ -3,7 +3,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import html2canvas from "html2canvas";
 import { personalityQuestions } from "@/content/th_questions";
 import Background from "@/components/Background";
 import { QuizState, Points, MBTIDimension } from "@/types/QuizType";
