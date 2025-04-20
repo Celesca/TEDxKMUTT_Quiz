@@ -191,10 +191,11 @@ export default function PersonalityQuizApp() {
         >
           {/* Result card content to be captured - only the image */}
           <div className="mb-4 w-full text-center">
-            <h2 className="text-2xl font-bold text-white mb-2">
-              คุณคือ {quizState.mbtiType}
+            <h2 className="text-2xl font-bold text-black mb-2">
+              คุณคือ..
             </h2>
           </div>
+
           <div ref={resultCardRef} className="w-full">
             <Image
               src={getMBTICardPath(quizState.mbtiType)}
