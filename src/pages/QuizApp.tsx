@@ -72,17 +72,9 @@ export default function PersonalityQuizApp() {
 
   const downloadResultCard = async () => {
     try {
-      // Create a link element
       const link = document.createElement('a');
-      
-      // Set the download filename
       link.download = `${quizState.mbtiType}.png`;
-      
-      // Set the href to the public path of the image
-      // This points directly to the image file in the public folder
       link.href = getMBTICardPath(quizState.mbtiType);
-      
-      // Trigger the download
       link.click();
     } catch (error) {
       console.error("Error generating download:", error);
@@ -198,6 +190,11 @@ export default function PersonalityQuizApp() {
           transition={{ duration: 0.5 }}
         >
           {/* Result card content to be captured - only the image */}
+          <div className="mb-4 w-full text-center">
+            <h2 className="text-2xl font-bold text-white mb-2">
+              คุณคือ {quizState.mbtiType}
+            </h2>
+          </div>
           <div ref={resultCardRef} className="w-full">
             <Image
               src={getMBTICardPath(quizState.mbtiType)}
@@ -245,7 +242,7 @@ export default function PersonalityQuizApp() {
         className="bg-white backdrop-blur-sm rounded-lg p-8 max-w-md w-full shadow-2xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: isTransitioning ? 0 : 1 }}
-        transition={{ duration: 0.3 }} // Fast transition
+        transition={{ duration: 0.3 }}
       >
         {quizState.isLoading ? (
           <div className="text-gray-800 text-center">
