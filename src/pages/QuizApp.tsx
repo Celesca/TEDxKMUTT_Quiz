@@ -33,7 +33,6 @@ export default function PersonalityQuizApp() {
   const [quizState, setQuizState] = useState<QuizState>(INITIAL_QUIZ_STATE);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  // Result card reference for downloading
   const resultCardRef = useRef<HTMLDivElement>(null);
 
 
@@ -210,6 +209,9 @@ export default function PersonalityQuizApp() {
               src={getMBTICardPath(quizState.mbtiType)}
               alt={`${quizState.mbtiType} Personality Card`}
               className="w-full rounded-lg shadow-xl"
+              width={1080}
+              height={1920}
+              priority
             />
           </div>
           {/* Action Buttons - positioned below the image */}
