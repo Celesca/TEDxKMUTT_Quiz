@@ -3,7 +3,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import html2canvas from "html2canvas";
 import { personalityQuestions } from "@/content/th_questions";
 import Background from "@/components/Background";
 import { QuizState, Points, MBTIDimension } from "@/types/QuizType";
@@ -33,7 +32,6 @@ export default function PersonalityQuizApp() {
   const [quizState, setQuizState] = useState<QuizState>(INITIAL_QUIZ_STATE);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  // Result card reference for downloading
   const resultCardRef = useRef<HTMLDivElement>(null);
 
 
@@ -72,31 +70,27 @@ export default function PersonalityQuizApp() {
     }
   };
 
-  // Function to download the result card as an image
   const downloadResultCard = async () => {
-    if (!resultCardRef.current) return;
-
     try {
-      const canvas = await html2canvas(resultCardRef.current, {
-        scale: 2, // Higher resolution
-        backgroundColor: null,
-        logging: false,
-      });
-
-      const dataURL = canvas.toDataURL('image/png');
+      // Create a link element
       const link = document.createElement('a');
-      link.download = `${quizState.mbtiType}_Result.png`;
-      link.href = dataURL;
+      
+      // Set the download filename
+      link.download = `${quizState.mbtiType}.png`;
+      
+      // Set the href to the public path of the image
+      // This points directly to the image file in the public folder
+      link.href = getMBTICardPath(quizState.mbtiType);
+      
+      // Trigger the download
       link.click();
     } catch (error) {
       console.error("Error generating download:", error);
     }
   };
 
-  // Replace with this function to get the image path
   function getMBTICardPath(type: string): string {
-    // Using the public folder path instead of src
-    return `/cards/${type}_Card.png`;
+    return `/cards/${type}.png`;
   }
 
   const loadQuestions = async () => {
@@ -111,11 +105,16 @@ export default function PersonalityQuizApp() {
     loadQuestions();
   }, []);
 
-  // Update your reset animation effect to also reset the selected answer
   useEffect(() => {
     setHasAnimated(false);
-    setSelectedAnswer(null); // Reset selected answer when question changes
+    setSelectedAnswer(null);
   }, [quizState.currentQuestion]);
+
+  useEffect(() => {
+    if (quizState.showResults && quizState.mbtiType) {
+      submitToGoogleForm(quizState.mbtiType);
+    }
+  }, [quizState.showResults, quizState.mbtiType]);
 
   // Modify the handleAnswerClick function to ensure proper reset of animations and styles
   const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
@@ -170,20 +169,13 @@ export default function PersonalityQuizApp() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Modify the calculateMBTIType function to auto-submit the form
   const calculateMBTIType = (scores: Points): string => {
     const type = [
       scores.E > scores.I ? 'E' : 'I',
-      scores.S > scores.N ? 'S' : 'N',
       scores.T > scores.F ? 'T' : 'F',
       scores.J > scores.P ? 'J' : 'P'
     ].join('');
-
-    // Automatically submit the form when we determine the MBTI type
-    setTimeout(() => {
-      submitToGoogleForm(type);
-    }, 500);
-
+  
     return type;
   };
 
@@ -211,6 +203,9 @@ export default function PersonalityQuizApp() {
               src={getMBTICardPath(quizState.mbtiType)}
               alt={`${quizState.mbtiType} Personality Card`}
               className="w-full rounded-lg shadow-xl"
+              width={1080}
+              height={1920}
+              priority
             />
           </div>
           {/* Action Buttons - positioned below the image */}
@@ -293,35 +288,35 @@ export default function PersonalityQuizApp() {
             <div className="space-y-3">
               {quizState.questions[quizState.currentQuestion]?.answers.map((answer, index) => (
                 <motion.button
-                key={`answer-${quizState.currentQuestion}-${index}`} // Key based on both question and answer index
-                onClick={() => handleAnswerClick(answer.dimension, index)}
-                className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
+                  key={`answer-${quizState.currentQuestion}-${index}`} // Key based on both question and answer index
+                  onClick={() => handleAnswerClick(answer.dimension, index)}
+                  className={`w-full bg-gray-50 text-gray-800 py-3 px-5 rounded-lg
                   hover:bg-red-50 hover:border-red-300 transition duration-300 ease-in-out
                   text-left text-base border border-gray-200 relative group overflow-hidden
                   ${selectedAnswer === index ? 'bg-red-50 border-red-400' : ''}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: 0.2 + (index * 0.08),
-                  ease: "easeOut"
-                }}
-                whileHover={{
-                  scale: selectedAnswer === null ? 1.02 : 1,
-                  transition: { duration: 0.2 }
-                }}
-                whileTap={{ scale: 0.98 }}
-                disabled={selectedAnswer !== null}
-              >
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: 0.2 + (index * 0.08),
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    scale: selectedAnswer === null ? 1.02 : 1,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={selectedAnswer !== null}
+                >
                   {/* Rest of button content remains the same */}
                   <motion.div
-    key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
-    className="absolute inset-0 bg-red-100 origin-left"
-    initial={{ scaleX: 0 }}
-    whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
-    animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
-    transition={{ duration: 0.3 }}
-  />
+                    key={`bg-${quizState.currentQuestion}-${index}`} // Key for background animation
+                    className="absolute inset-0 bg-red-100 origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: selectedAnswer === null ? 0.08 : 0 }}
+                    animate={{ scaleX: selectedAnswer === index ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
 
                   <div className="relative z-10 flex items-center">
                     <span className={`w-6 h-6 ${selectedAnswer === index ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'
