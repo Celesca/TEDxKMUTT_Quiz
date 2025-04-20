@@ -71,28 +71,25 @@ export default function PersonalityQuizApp() {
     }
   };
 
-  // Function to download the result card as an image
   const downloadResultCard = async () => {
-    if (!resultCardRef.current) return;
-
     try {
-      const canvas = await html2canvas(resultCardRef.current, {
-        scale: 2, // Higher resolution
-        backgroundColor: null,
-        logging: false,
-      });
-
-      const dataURL = canvas.toDataURL('image/png');
+      // Create a link element
       const link = document.createElement('a');
+      
+      // Set the download filename
       link.download = `${quizState.mbtiType}_Result.png`;
-      link.href = dataURL;
+      
+      // Set the href to the public path of the image
+      // This points directly to the image file in the public folder
+      link.href = getMBTICardPath(quizState.mbtiType);
+      
+      // Trigger the download
       link.click();
     } catch (error) {
       console.error("Error generating download:", error);
     }
   };
 
-  // Replace with this function to get the image path
   function getMBTICardPath(type: string): string {
     return `/cards/${type}.png`;
   }
