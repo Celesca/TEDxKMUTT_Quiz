@@ -109,11 +109,16 @@ export default function PersonalityQuizApp() {
     loadQuestions();
   }, []);
 
-  // Update your reset animation effect to also reset the selected answer
   useEffect(() => {
     setHasAnimated(false);
-    setSelectedAnswer(null); // Reset selected answer when question changes
+    setSelectedAnswer(null);
   }, [quizState.currentQuestion]);
+
+  useEffect(() => {
+    if (quizState.showResults && quizState.mbtiType) {
+      submitToGoogleForm(quizState.mbtiType);
+    }
+  }, [quizState.showResults, quizState.mbtiType]);
 
   // Modify the handleAnswerClick function to ensure proper reset of animations and styles
   const handleAnswerClick = (dimension: MBTIDimension, index: number): void => {
@@ -168,20 +173,13 @@ export default function PersonalityQuizApp() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Modify the calculateMBTIType function to exclude the S/N dimension
   const calculateMBTIType = (scores: Points): string => {
-    // Only use the E/I, T/F, and J/P dimensions
     const type = [
       scores.E > scores.I ? 'E' : 'I',
       scores.T > scores.F ? 'T' : 'F',
       scores.J > scores.P ? 'J' : 'P'
     ].join('');
-
-    // Automatically submit the form when we determine the MBTI type
-    setTimeout(() => {
-      submitToGoogleForm(type);
-    }, 500);
-
+  
     return type;
   };
 
