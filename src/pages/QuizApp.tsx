@@ -94,7 +94,7 @@ export default function PersonalityQuizApp() {
 
   // Replace with this function to get the image path
   function getMBTICardPath(type: string): string {
-    return `/cards/${type}_Card.png`;
+    return `/cards/${type}.png`;
   }
 
   const loadQuestions = async () => {
