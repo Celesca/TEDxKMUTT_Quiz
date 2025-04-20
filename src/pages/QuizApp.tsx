@@ -3,6 +3,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import { personalityQuestions } from "@/content/th_questions";
 import Background from "@/components/Background";
 import { QuizState, Points, MBTIDimension } from "@/types/QuizType";
@@ -33,6 +34,40 @@ export default function PersonalityQuizApp() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const resultCardRef = useRef<HTMLDivElement>(null);
+
+  const [showSharePopup, setShowSharePopup] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const discountCode = "TEDX2025"; // Your discount code
+
+  // Replace the downloadResultCard function with this shareResultCard function
+  const shareResultCard = async () => {
+    try {
+      // Download the image first
+      const link = document.createElement('a');
+      link.download = `${quizState.mbtiType}.png`;
+      link.href = getMBTICardPath(quizState.mbtiType);
+      link.click();
+
+      // Then show the popup
+      setShowSharePopup(true);
+
+      // Auto-hide popup after 10 seconds
+      setTimeout(() => {
+        setShowSharePopup(false);
+        setCopiedCode(false);
+      }, 10000);
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
+  // Function to copy discount code to clipboard
+  const copyDiscountCode = () => {
+    navigator.clipboard.writeText(discountCode).then(() => {
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    });
+  };
 
 
   const [, setHasAnimated] = useState(false);
@@ -70,16 +105,16 @@ export default function PersonalityQuizApp() {
     }
   };
 
-  const downloadResultCard = async () => {
-    try {
-      const link = document.createElement('a');
-      link.download = `${quizState.mbtiType}.png`;
-      link.href = getMBTICardPath(quizState.mbtiType);
-      link.click();
-    } catch (error) {
-      console.error("Error generating download:", error);
-    }
-  };
+  // const downloadResultCard = async () => {
+  //   try {
+  //     const link = document.createElement('a');
+  //     link.download = `${quizState.mbtiType}.png`;
+  //     link.href = getMBTICardPath(quizState.mbtiType);
+  //     link.click();
+  //   } catch (error) {
+  //     console.error("Error generating download:", error);
+  //   }
+  // };
 
   function getMBTICardPath(type: string): string {
     return `/cards/${type}.png`;
@@ -167,7 +202,7 @@ export default function PersonalityQuizApp() {
       scores.T > scores.F ? 'T' : 'F',
       scores.J > scores.P ? 'J' : 'P'
     ].join('');
-  
+
     return type;
   };
 
@@ -179,7 +214,6 @@ export default function PersonalityQuizApp() {
     });
   };
 
-  // Result UI
   if (quizState.showResults) {
     return (
       <Background>
@@ -191,7 +225,7 @@ export default function PersonalityQuizApp() {
         >
           {/* Result card content to be captured - only the image */}
           <div className="mb-4 w-full text-center">
-            <h2 className="text-2xl font-bold text-black mb-2">
+            <h2 className="text-2xl font-bold text-black drop-shadow-md mb-2">
               คุณคือ..
             </h2>
           </div>
@@ -206,6 +240,7 @@ export default function PersonalityQuizApp() {
               priority
             />
           </div>
+
           {/* Action Buttons - positioned below the image */}
           <div className="flex gap-4 mt-6 w-full">
             <Button
@@ -220,17 +255,89 @@ export default function PersonalityQuizApp() {
               text="Try Again"
             />
             <Button
-              onClick={() => downloadResultCard()}
+              onClick={() => shareResultCard()}
               variant="primary"
               className="flex-1 items-center"
               iconLeft={
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
               }
-              text="Download"
+              text="Share"
             />
           </div>
+
+          {/* Share Success Popup */}
+          <AnimatePresence>
+            {showSharePopup && (
+              <motion.div
+                className="fixed inset-0 flex items-center justify-center z-50 p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowSharePopup(false)}></div>
+                <motion.div
+                  className="bg-white rounded-2xl shadow-xl p-6 relative z-10 max-w-sm w-full"
+                  initial={{ scale: 0.8, y: 20 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.8, y: 20 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                >
+                  <button
+                    className="absolute right-4 top-4 text-gray-500 hover:text-gray-800"
+                    onClick={() => setShowSharePopup(false)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-5">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+
+                    <h3 className="text-2xl font-bold text-gray-800 mb-3">ขอบคุณที่มาร่วมสนุกกับเรา!</h3>
+                    <p className="text-gray-600 mb-5 text-lg">โค้ดส่วนลด 10% สำหรับบัตร และรูปภาพแสนน่ารัก!</p>
+
+                    <div className="w-full p-4 bg-gradient-to-r from-red-50 to-gray-50 rounded-lg flex items-center justify-between mb-5 border border-red-100 shadow-sm">
+                      <span className="font-mono font-bold text-red-600 text-xl tracking-wider">{discountCode}</span>
+                      <button
+                        className="text-gray-500 hover:text-red-600 transition-colors bg-white p-2 rounded-md shadow-sm hover:shadow"
+                        onClick={copyDiscountCode}
+                      >
+                        {copiedCode ? (
+                          <span className="text-green-600 text-sm font-medium px-2">Copied!</span>
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+
+                    <p className="text-gray-600">
+                      ใช้โค้ดส่วนลดได้ที่
+                      <a
+                        className="ml-1 text-red-600 font-medium hover:text-red-700 transition-colors hover:underline inline-flex items-center"
+                        href="https://www.zipeventapp.com/e/TEDxKMUTT-The-Silent-Loud-Shaping-Tomorrow-Honoring-Today"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        เว็บไซต์
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    </p>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </Background>
     );
