@@ -37,7 +37,7 @@ export default function PersonalityQuizApp() {
 
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
-  const discountCode = "TEDX2025"; // Your discount code
+  const discountCode = "KMUTTX2025"; // Your discount code
 
   // Replace the downloadResultCard function with this shareResultCard function
   const shareResultCard = async () => {
@@ -301,7 +301,7 @@ export default function PersonalityQuizApp() {
                     </div>
 
                     <h3 className="text-2xl font-bold text-gray-800 mb-3">ขอบคุณที่มาร่วมสนุกกับเรา!</h3>
-                    <p className="text-gray-600 mb-5 text-lg">โค้ดส่วนลด 10% สำหรับบัตร และรูปภาพแสนน่ารัก!</p>
+                    <p className="text-gray-600 mb-5 text-lg">โค้ดส่วนลดสำหรับบัตรปกติและนักศึกษา พร้อมรูปภาพแสนน่ารัก!</p>
 
                     <div className="w-full p-4 bg-gradient-to-r from-red-50 to-gray-50 rounded-lg flex items-center justify-between mb-5 border border-red-100 shadow-sm">
                       <span className="font-mono font-bold text-red-600 text-xl tracking-wider">{discountCode}</span>
