@@ -31,7 +31,7 @@ const Navbar = () => {
           </button>
           
           <div className="relative z-10">
-            <a href="https://thesilentloud.tedxkmutt.com/" target="_blank" rel="noopener noreferrer"> 
+            <a href="https://www.zipeventapp.com/e/TEDxKMUTT-The-Silent-Loud-Shaping-Tomorrow-Honoring-Today" target="_blank" rel="noopener noreferrer"> 
             <Button 
               variant="primary" 
               text="Get My Ticket ↗" 
